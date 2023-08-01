@@ -23,16 +23,51 @@ This allows for precise calculations as required when handling money.
 
 Full documentation can be found at: 
 
-https://money2.noojee.dev
+https://money2.onepub.dev
 
 
 Api documenation can be found at:
 
 https://pub.dev/documentation/money2/latest/
 
-# Another Dart tool by Noojee
+# Sponsors
 
-<a href="https://noojee.dev">![Noojee](https://github.com/noojee/money.dart/blob/master/images/noojee-logo.png?raw=true)</a>
+Money2 is sponsored by OnePub, the Dart private package repository.
+
+<a href="https://onepub.dev">![OnePub](https://github.com/onepub-dev/money.dart/blob/master/images/LogoAndByLine.png?raw=true)</a>
+
+
+
+# Examples
+
+Example 2
+
+```dart
+import 'money2.dart';
+Currency usdCurrency = Currency.create('USD', 2);
+
+// Create money from an int.
+Money costPrice = Money.fromIntWithCurrency(1000, usdCurrency);
+expect(costPrice.toString(), equals(r'$10.00'));
+
+final taxInclusive = costPrice * 1.1;
+expect(taxInclusive.toString(), equals(r'$11.00'));
+
+expect(taxInclusive.format('SCC #.00'), equals(r'$US 11.00'));
+
+// Create money from an String using the `Currency` instance.
+Money parsed = usdCurrency.parse(r'$10.00');
+expect(parsed.format('SCCC 0.00'), equals(r'$USD 10.00'));
+
+// Create money from an int which contains the MajorUnit (e.g dollars)
+Money buyPrice = Money.fromNum(10, code: 'AUD');
+expect(buyPrice.toString(), equals(r'$10.00'));
+
+// Create money from a double which contains Major and Minor units (e.g. dollars and cents)
+// We don't recommend transporting money as a double as you will get rounding errors.
+Money sellPrice = Money.fromNum(10.50, code: 'AUD');
+expect(sellPrice.toString(), equals(r'$10.50'));
+```
 
 
 # Upgrading from v2 to v3
@@ -73,34 +108,3 @@ The default pattern for BTC has been changed to:
  'S0.00000000'
 
  This is to make it consistent with other currencies (i.e. the number of required decimal places matches the scale);
-
-# Examples
-
-Example 2
-
-```dart
-import 'money2.dart';
-Currency usdCurrency = Currency.create('USD', 2);
-
-// Create money from an int.
-Money costPrice = Money.fromIntWithCurrency(1000, usdCurrency);
-expect(costPrice.toString(), equals(r'$10.00'));
-
-final taxInclusive = costPrice * 1.1;
-expect(taxInclusive.toString(), equals(r'$11.00'));
-
-expect(taxInclusive.format('SCC #.00'), equals(r'$US 11.00'));
-
-// Create money from an String using the `Currency` instance.
-Money parsed = usdCurrency.parse(r'$10.00');
-expect(parsed.format('SCCC 0.00'), equals(r'$USD 10.00'));
-
-// Create money from an int which contains the MajorUnit (e.g dollars)
-Money buyPrice = Money.fromNum(10, code: 'AUD');
-expect(buyPrice.toString(), equals(r'$10.00'));
-
-// Create money from a double which contains Major and Minor units (e.g. dollars and cents)
-// We don't recommend transporting money as a double as you will get rounding errors.
-Money sellPrice = Money.fromNum(10.50, code: 'AUD');
-expect(sellPrice.toString(), equals(r'$10.50'));
-```

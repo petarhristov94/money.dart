@@ -1,3 +1,7 @@
+# 4.0.0
+- updated min sdk to 3.x
+- updated to fixed 4.x
+
 # 3.4.0
 - upgraded to: fixed 2.4.0, intl 0.18, meta 1.9.0
 
