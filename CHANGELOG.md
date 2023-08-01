@@ -1,3 +1,8 @@
+# 4.0.0
+- updated min sdk to 3.x
+- updated to fixed 4.x
+- test: add test for trailing symbol pattern
+
 # 3.4.1
 - fix(pattern_encoder): handle trailing decimal when pattern has trailing symbol
 - Added scale unit tests provided by @nesquikm
