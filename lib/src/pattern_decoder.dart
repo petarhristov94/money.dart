@@ -11,6 +11,7 @@ import 'currency.dart';
 import 'encoders.dart';
 import 'money.dart';
 import 'money_data.dart';
+import 'util.dart';
 
 /// Parses a String containing a monetary amount based on a pattern.
 class PatternDecoder implements MoneyDecoder<String> {
@@ -302,9 +303,6 @@ class ValueQueue {
     final majorDigits = _takeDigits();
     return majorDigits.isEmpty ? BigInt.zero : BigInt.parse(majorDigits);
   }
-
-  /// true if the passed character is a digit.
-  bool isDigit(String char) => RegExp('[0123456789]').hasMatch(char);
 
   /// Takes any remaining digits as minor digits.
   /// If there are less digits than [Currency.scale]

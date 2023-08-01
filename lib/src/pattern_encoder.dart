@@ -10,10 +10,11 @@ import 'package:intl/intl.dart';
 import 'encoders.dart';
 import 'money.dart';
 import 'money_data.dart';
+import 'util.dart';
 
 /// Formats a monetary value to a String based on a pattern.
 class PatternEncoder implements MoneyEncoder<String> {
-  ///
+  ///s
   PatternEncoder(this.money, this.pattern);
 
   /// the amount to encode
@@ -52,7 +53,13 @@ class PatternEncoder implements MoneyEncoder<String> {
 
       /// ensure we don't end up with a trailing decimal point.
       if (formattedMinorPart.isNotEmpty) {
-        formatted += data.currency.decimalSeparator + formattedMinorPart;
+        // If the minor part contains a digit (and not just the currency symbol)
+        // then we need a decimal place.
+        if (isDigit(formattedMinorPart)) {
+          formatted += data.currency.decimalSeparator + formattedMinorPart;
+        } else {
+          formatted += formattedMinorPart;
+        }
       }
     }
 
