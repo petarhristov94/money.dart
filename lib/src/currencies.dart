@@ -5,7 +5,6 @@
  */
 
 import 'common_currencies.dart';
-
 import 'currency.dart';
 import 'money.dart';
 import 'pattern_decoder.dart';
@@ -42,8 +41,8 @@ class Currencies {
   /// the currencey code in String and return the correct type.
   /// ```dart
   /// Currency usd = Currency.create('USD', 2);
-  /// Currencies.register(usd);
-  /// final usdAmount = Currencies.parse(r'$USD1500.0');
+  /// Currencies().register(usd);
+  /// final usdAmount = Currencies().parse(r'$USD1500.0');
   /// ```
   /// See:
   /// [Currencies.parse]
@@ -62,7 +61,7 @@ class Currencies {
   /// ```dart
   /// Currency usd = Currency.create('USD', 2);
   /// Currency aud = Currency.create('AUD', 2);
-  /// Currencies.registerAll([usd, aud]);
+  /// Currencies().registerList([usd, aud]);
   /// final usdAmount = Currencies.parse(r'$USD1500.0');
   /// ```
   /// See:
@@ -106,8 +105,8 @@ class Currencies {
   /// ```dart
   /// Currency usd = Currency.create('USD', 2);
   /// Currency aud = Currency.create('AUD', 2);
-  /// Currencies.registerAll([usd, aud]);
-  /// final usdAmount = Currencies.parse(r'$USD1500.0');
+  /// Currencies().registerList([usd, aud]);
+  /// final usdAmount = Currencies().parse(r'$USD1500.0');
   /// ```
   ///
   /// See:
@@ -162,7 +161,7 @@ class Currencies {
   /// Returns the [Currency] that matches [code] or `null` if
   /// no matching [code] is found.
   /// ```dart
-  /// final usdAmount = Currencies.parse(r'$USD1500.0');
+  /// final usdAmount = Currencies().parse(r'$USD1500.0');
   /// ```
   ///
   /// See:
@@ -190,9 +189,9 @@ class Currencies {
   /// ```dart
   /// final usd = Currency.create('USD', 2);
   /// final eur = Currency.create('EUR', 2);
-  /// Currencies.registerList([usd, eur]);
-  /// expect(Currencies.getRegistered(), [usd, eur]);
-  /// expect(Currencies.getRegistered().map((c) => c.code), ['USD', 'EUR']);
+  /// Currencies().registerList([usd, eur]);
+  /// expect(Currencies().getRegistered(), [usd, eur]);
+  /// expect(Currencies().getRegistered().map((c) => c.code), ['USD', 'EUR']);
   /// ```
   ///
   /// see:
