@@ -36,5 +36,14 @@ void main() {
       Currencies()['TEST'] = Currency.create('TEST', 2);
       expect(Currencies().find('TEST'), isNotNull);
     });
+
+    test('invalid currency', () {
+      /// base line test that we have USD registered
+      expect(Currencies()['USD'], isNotNull);
+
+      /// no try a slighly longer variant that doesn't exist.
+      expect(Currencies()['USDT'], isNull);
+      expect(Currencies().find('USDT'), isNull);
+    });
   });
 }

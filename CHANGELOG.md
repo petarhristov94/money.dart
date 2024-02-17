@@ -1,3 +1,6 @@
+# 4.1.0
+- upgraded to intl 0.19
+
 # 4.0.0
 - updated min sdk to 3.x
 - updated to fixed 4.x
