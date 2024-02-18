@@ -13,7 +13,7 @@ void main() {
       final usd = Currency.create('USD', 2);
       final invoiceAmount = Money.fromIntWithCurrency(1000, aud);
       final auToUsExchangeRate = ExchangeRate.fromMinorUnits(68,
-          scale: 2, fromCode: 'AUD', toCode: 'USD');
+          decimalDigits: 2, fromCode: 'AUD', toCode: 'USD');
       final us680 = Money.fromIntWithCurrency(680, usd);
 
       expect(invoiceAmount.exchangeTo(auToUsExchangeRate), equals(us680));
@@ -27,7 +27,7 @@ void main() {
       expect(twdM.toString(), equals(r'NT$1000.00'));
 
       final twdToUsdRate = ExchangeRate.fromMinorUnits(3,
-          scale: 2, fromCode: 'TWD', toCode: 'USD'); // 1 TWD = 0.03 USD
+          decimalDigits: 2, fromCode: 'TWD', toCode: 'USD'); // 1 TWD = 0.03 USD
       expect(twdToUsdRate.toString(), equals('0.03'));
 
       final usdM = twdM.exchangeTo(twdToUsdRate);
@@ -37,10 +37,10 @@ void main() {
       //     Currency.create('USD', 6, pattern: 'S0.000000');
 
       final acurateTwdToUsdRate = ExchangeRate.fromMinorUnits(35231,
-          scale: 6,
+          decimalDigits: 6,
           fromCode: 'TWD',
           toCode: 'USD',
-          toScale: 6); // 1 TWD = 0.035231 USD
+          toDecimalDigits: 6); // 1 TWD = 0.035231 USD
       expect(acurateTwdToUsdRate.toString(), equals('0.035231'));
 
       expect(acurateTwdToUsdRate.format('0.00'), equals('0.03'));
@@ -57,7 +57,7 @@ void main() {
       expect(twdM.toString(), equals(r'NT$1000.00'));
 
       final twdToJpyRate = ExchangeRate.fromMinorUnits(3,
-          scale: 0, fromCode: 'TWD', toCode: 'JPY');
+          decimalDigits: 0, fromCode: 'TWD', toCode: 'JPY');
       expect(twdToJpyRate.toString(), equals('3'));
 
       final jpyM = twdM.exchangeTo(twdToJpyRate);
@@ -65,9 +65,9 @@ void main() {
     });
 
     test('rub', () {
-      final price = Money.fromNum(28000, code: 'RUB');
+      final price = Money.fromNum(28000, isoCode: 'RUB');
       final rubToUsExchangeRate = ExchangeRate.fromNum(0.013445,
-          scale: 6, fromCode: 'RUB', toCode: 'USD');
+          decimalDigits: 6, fromCode: 'RUB', toCode: 'USD');
       expect(price.exchangeTo(rubToUsExchangeRate).format('###,###.## S'),
           equals(r'376.46 $'));
     });

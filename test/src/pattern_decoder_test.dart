@@ -69,11 +69,11 @@ void main() {
     expect(moneyData.amount.minorUnits.toInt(), equals(100000000));
   });
 
-  test('Optional Code', () {
+  test('Optional isoCode', () {
     final btc = CommonCurrencies().btc;
     final btcDecoder = PatternDecoder(btc, 'CCC#.#');
 
-    /// Missing Code
+    /// Missing isoCode
     expect(() => btcDecoder.decode('₿1'), throwsA(isA<MoneyParseException>()));
     final moneyData = btcDecoder.decode('1');
     expect(moneyData.currency, equals(btc));
@@ -82,7 +82,7 @@ void main() {
     expect(moneyData.amount.minorUnits.toInt(), equals(100000000));
   });
 
-  test('Optional Code and Symbol', () {
+  test('Optional isoCode and Symbol', () {
     final btc = CommonCurrencies().btc;
     final btcDecoder = PatternDecoder(btc, 'CCCS#.#');
 
@@ -107,11 +107,11 @@ void main() {
   });
 
   test('More optional tests', () {
-    expect(Money.parse('1.23', code: 'USD', pattern: 'SCCC#.#').amount,
+    expect(Money.parse('1.23', isoCode: 'USD', pattern: 'SCCC#.#').amount,
         equals(Fixed.parse('1.23')));
-    expect(Money.parse(r'$12.34', code: 'USD', pattern: 'SCCC#.#').amount,
+    expect(Money.parse(r'$12.34', isoCode: 'USD', pattern: 'SCCC#.#').amount,
         equals(Fixed.parse('12.34')));
-    expect(Money.parse(r'$USD12.34', code: 'USD', pattern: 'SCCC#.#').amount,
+    expect(Money.parse(r'$USD12.34', isoCode: 'USD', pattern: 'SCCC#.#').amount,
         equals(Fixed.parse('12.34')));
   });
 

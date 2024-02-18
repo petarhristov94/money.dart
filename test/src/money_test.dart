@@ -11,98 +11,98 @@ void main() {
   group('Money', () {
     group('instantiation', () {
       test('fromInt', () {
-        Money.fromInt(0, code: 'USD');
-        Money.fromInt(1, code: 'USD');
-        Money.fromInt(-1, code: 'USD');
+        Money.fromInt(0, isoCode: 'USD');
+        Money.fromInt(1, isoCode: 'USD');
+        Money.fromInt(-1, isoCode: 'USD');
       });
 
       test('from', () {
-        expect(Money.fromNum(0, code: 'USD'),
-            equals(Money.fromInt(0, code: 'USD')));
-        expect(Money.fromNum(1, code: 'USD'),
-            equals(Money.fromInt(100, code: 'USD')));
-        expect(Money.fromNum(-1, code: 'USD'),
-            equals(Money.fromInt(-100, code: 'USD')));
-        expect(Money.fromNum(1.99, code: 'USD'),
-            equals(Money.fromInt(199, code: 'USD')));
-        expect(Money.fromNum(-1.99, code: 'USD'),
-            equals(Money.fromInt(-199, code: 'USD')));
+        expect(Money.fromNum(0, isoCode: 'USD'),
+            equals(Money.fromInt(0, isoCode: 'USD')));
+        expect(Money.fromNum(1, isoCode: 'USD'),
+            equals(Money.fromInt(100, isoCode: 'USD')));
+        expect(Money.fromNum(-1, isoCode: 'USD'),
+            equals(Money.fromInt(-100, isoCode: 'USD')));
+        expect(Money.fromNum(1.99, isoCode: 'USD'),
+            equals(Money.fromInt(199, isoCode: 'USD')));
+        expect(Money.fromNum(-1.99, isoCode: 'USD'),
+            equals(Money.fromInt(-199, isoCode: 'USD')));
       });
 
       test('high precision', () {
         final currency = Currency.create('BIG', 63);
         Currencies().register(currency);
         expect(
-            Money.parse(r'$10.0', code: 'BIG').minorUnits /
+            Money.parse(r'$10.0', isoCode: 'BIG').minorUnits /
                 currency.scaleFactor,
             equals(10.0));
 
         expect(
             () =>
-                Money.fromNum(10.0, code: 'BIG').minorUnits /
+                Money.fromNum(10.0, isoCode: 'BIG').minorUnits /
                 currency.scaleFactor,
             throwsA(isA<AmountTooLargeException>()));
         expect(
-            Money.parse(r'$-10.0', code: 'BIG').minorUnits /
+            Money.parse(r'$-10.0', isoCode: 'BIG').minorUnits /
                 currency.scaleFactor,
             equals(-10.0));
       });
     });
 
     test('bigint hash value', () {
-      final fiveDollars = Money.fromInt(500, code: 'USD');
+      final fiveDollars = Money.fromInt(500, isoCode: 'USD');
 
       expect(fiveDollars.hashCode,
-          equals(Money.fromInt(500, code: 'USD').hashCode));
+          equals(Money.fromInt(500, isoCode: 'USD').hashCode));
     });
 
     test('int hash value', () {
-      final fiveDollars = Money.fromInt(500, code: 'USD');
+      final fiveDollars = Money.fromInt(500, isoCode: 'USD');
 
       expect(fiveDollars.hashCode,
-          equals(Money.fromInt(500, code: 'USD').hashCode));
+          equals(Money.fromInt(500, isoCode: 'USD').hashCode));
     });
 
     test('predicate of currency', () {
-      final oneDollars = Money.fromInt(100, code: 'USD');
+      final oneDollars = Money.fromInt(100, isoCode: 'USD');
 
       expect(oneDollars.isInCurrency('USD'), isTrue);
       expect(oneDollars.isInCurrency('EUR'), isFalse);
     });
 
     test('predicate of currency match', () {
-      final oneDollar = Money.fromInt(100, code: 'USD');
-      final twoDollars = Money.fromInt(200, code: 'USD');
-      final oneEuro = Money.fromInt(100, code: 'EUR');
+      final oneDollar = Money.fromInt(100, isoCode: 'USD');
+      final twoDollars = Money.fromInt(200, isoCode: 'USD');
+      final oneEuro = Money.fromInt(100, isoCode: 'EUR');
 
       expect(oneDollar.isInSameCurrencyAs(twoDollars), isTrue);
       expect(oneDollar.isInSameCurrencyAs(oneEuro), isFalse);
     });
 
     group('big int amount predicates:', () {
-      final zeroCents = Money.fromInt(0, code: 'USD');
-      final oneCent = Money.fromInt(1, code: 'USD');
-      final minusOneCent = Money.fromInt(-1, code: 'USD');
+      final zeroCents = Money.fromInt(0, isoCode: 'USD');
+      final oneCent = Money.fromInt(1, isoCode: 'USD');
+      final minusOneCent = Money.fromInt(-1, isoCode: 'USD');
 
       moneyAmountPredicates(zeroCents, oneCent, minusOneCent);
     }); // big int amount predicates
 
     group('int amount predicates:', () {
-      final zeroCents = Money.fromInt(0, code: 'USD');
-      final oneCent = Money.fromInt(1, code: 'USD');
-      final minusOneCent = Money.fromInt(-1, code: 'USD');
+      final zeroCents = Money.fromInt(0, isoCode: 'USD');
+      final oneCent = Money.fromInt(1, isoCode: 'USD');
+      final minusOneCent = Money.fromInt(-1, isoCode: 'USD');
 
       moneyAmountPredicates(zeroCents, oneCent, minusOneCent);
     }); //
     group('comparison', () {
-      final fourDollars = Money.fromInt(400, code: 'USD');
-      final fiveDollars = Money.fromInt(500, code: 'USD');
-      final sixDollars = Money.fromInt(600, code: 'USD');
+      final fourDollars = Money.fromInt(400, isoCode: 'USD');
+      final fiveDollars = Money.fromInt(500, isoCode: 'USD');
+      final sixDollars = Money.fromInt(600, isoCode: 'USD');
 
-      final fiveEuros = Money.fromInt(500, code: 'EUR');
+      final fiveEuros = Money.fromInt(500, isoCode: 'EUR');
 
       test('==()', () {
-        expect(fiveDollars, equals(Money.fromInt(500, code: 'USD')));
+        expect(fiveDollars, equals(Money.fromInt(500, isoCode: 'USD')));
         expect(fiveDollars, isNot(equals(fourDollars)));
         expect(fiveDollars, isNot(equals(sixDollars)));
         expect(fiveDollars, isNot(equals(fiveEuros)));
@@ -156,47 +156,47 @@ void main() {
 
     group('arithmetic:', () {
       test('addition', () {
-        final oneDollar = Money.fromInt(100, code: 'USD');
-        final twoDollars = Money.fromInt(200, code: 'USD');
-        final threeDollars = Money.fromInt(300, code: 'USD');
+        final oneDollar = Money.fromInt(100, isoCode: 'USD');
+        final twoDollars = Money.fromInt(200, isoCode: 'USD');
+        final threeDollars = Money.fromInt(300, isoCode: 'USD');
 
         expect(oneDollar + twoDollars, equals(threeDollars));
       });
 
       test('addition error for summands in different currencies', () {
-        final oneDollar = Money.fromInt(100, code: 'USD');
-        final oneEuro = Money.fromInt(100, code: 'EUR');
+        final oneDollar = Money.fromInt(100, isoCode: 'USD');
+        final oneEuro = Money.fromInt(100, isoCode: 'EUR');
 
         expect(() => oneDollar + oneEuro, throwsArgumentError);
       });
 
       test('unary minus', () {
-        final oneDollar = Money.fromInt(100, code: 'USD');
-        final minusOneDollar = Money.fromInt(-100, code: 'USD');
+        final oneDollar = Money.fromInt(100, isoCode: 'USD');
+        final minusOneDollar = Money.fromInt(-100, isoCode: 'USD');
 
         expect(-oneDollar, equals(minusOneDollar));
         expect(-minusOneDollar, equals(oneDollar));
       });
 
       test('subtraction', () {
-        final oneDollar = Money.fromInt(100, code: 'USD');
-        final twoDollars = Money.fromInt(200, code: 'USD');
-        final threeDollars = Money.fromInt(300, code: 'USD');
+        final oneDollar = Money.fromInt(100, isoCode: 'USD');
+        final twoDollars = Money.fromInt(200, isoCode: 'USD');
+        final threeDollars = Money.fromInt(300, isoCode: 'USD');
 
         expect(threeDollars - oneDollar, equals(twoDollars));
       });
 
       test('subtraction error for operands in different currencies', () {
-        final oneDollar = Money.fromInt(100, code: 'USD');
-        final oneEuro = Money.fromInt(100, code: 'EUR');
+        final oneDollar = Money.fromInt(100, isoCode: 'USD');
+        final oneEuro = Money.fromInt(100, isoCode: 'EUR');
 
         expect(() => oneDollar - oneEuro, throwsArgumentError);
       });
 
       test('multiplication', () {
-        final zeroDollars = Money.fromInt(0, code: 'USD');
-        final oneDollar = Money.fromInt(100, code: 'USD');
-        final twoDollars = Money.fromInt(200, code: 'USD');
+        final zeroDollars = Money.fromInt(0, isoCode: 'USD');
+        final oneDollar = Money.fromInt(100, isoCode: 'USD');
+        final twoDollars = Money.fromInt(200, isoCode: 'USD');
 
         // Test integral multiplication:
         expect(oneDollar * 0, equals(zeroDollars));
@@ -209,33 +209,33 @@ void main() {
         expect(oneDollar * 1.0, equals(oneDollar));
         expect(oneDollar * -1.0, equals(-oneDollar));
 
-        expect(oneDollar * 0.5, equals(Money.fromInt(50, code: 'USD')));
-        expect(oneDollar * 2.01, equals(Money.fromInt(201, code: 'USD')));
-        expect(oneDollar * 0.99, equals(Money.fromInt(99, code: 'USD')));
+        expect(oneDollar * 0.5, equals(Money.fromInt(50, isoCode: 'USD')));
+        expect(oneDollar * 2.01, equals(Money.fromInt(201, isoCode: 'USD')));
+        expect(oneDollar * 0.99, equals(Money.fromInt(99, isoCode: 'USD')));
 
         // Test schoolbook rounding:
-        expect(oneDollar * 0.094, equals(Money.fromInt(9, code: 'USD')));
-        expect(oneDollar * -0.094, equals(Money.fromInt(-9, code: 'USD')));
+        expect(oneDollar * 0.094, equals(Money.fromInt(9, isoCode: 'USD')));
+        expect(oneDollar * -0.094, equals(Money.fromInt(-9, isoCode: 'USD')));
 
-        expect(oneDollar * 0.095, equals(Money.fromInt(10, code: 'USD')));
-        expect(oneDollar * -0.095, equals(Money.fromInt(-10, code: 'USD')));
+        expect(oneDollar * 0.095, equals(Money.fromInt(10, isoCode: 'USD')));
+        expect(oneDollar * -0.095, equals(Money.fromInt(-10, isoCode: 'USD')));
       });
 
       test('division', () {
-        final zeroDollars = Money.fromInt(0, code: 'USD');
-        final fiftyCents = Money.fromInt(50, code: 'USD');
-        final oneDollar = Money.fromInt(100, code: 'USD');
-        final twoDollars = Money.fromInt(200, code: 'USD');
+        final zeroDollars = Money.fromInt(0, isoCode: 'USD');
+        final fiftyCents = Money.fromInt(50, isoCode: 'USD');
+        final oneDollar = Money.fromInt(100, isoCode: 'USD');
+        final twoDollars = Money.fromInt(200, isoCode: 'USD');
 
         final t1 = twoDollars / 2;
         expect(t1.integerPart, equals(BigInt.one));
         expect(t1.decimalPart, equals(BigInt.zero));
-        expect(t1.scale, 2);
+        expect(t1.decimalDigits, 2);
 
         final t2 = -oneDollar;
         expect(t2.integerPart, equals(BigInt.from(-1)));
         expect(t2.decimalPart, equals(BigInt.zero));
-        expect(t2.scale, equals(2));
+        expect(t2.decimalDigits, equals(2));
 
         // Test with integral divisor:
         expect(zeroDollars / 2, equals(zeroDollars));
@@ -245,36 +245,36 @@ void main() {
         expect(twoDollars / -2, equals(-oneDollar));
 
         expect(oneDollar / 2, equals(fiftyCents));
-        expect(oneDollar / 3, equals(Money.fromInt(33, code: 'USD')));
+        expect(oneDollar / 3, equals(Money.fromInt(33, isoCode: 'USD')));
 
         // Test with floating-point divisor:
         expect(oneDollar / 0.5, equals(twoDollars));
         expect(oneDollar / 0.5, equals(twoDollars));
 
-        expect(oneDollar / 1.094, equals(Money.fromInt(91, code: 'USD')));
-        expect(oneDollar / -1.094, equals(Money.fromInt(-91, code: 'USD')));
+        expect(oneDollar / 1.094, equals(Money.fromInt(91, isoCode: 'USD')));
+        expect(oneDollar / -1.094, equals(Money.fromInt(-91, isoCode: 'USD')));
 
-        expect(oneDollar / 1.092, equals(Money.fromInt(92, code: 'USD')));
-        expect(oneDollar / -1.092, equals(Money.fromInt(-92, code: 'USD')));
+        expect(oneDollar / 1.092, equals(Money.fromInt(92, isoCode: 'USD')));
+        expect(oneDollar / -1.092, equals(Money.fromInt(-92, isoCode: 'USD')));
       });
     }); // arithmetic
 
     group('allocation according to ratios', () {
       test('throws an error when list of ratios is empty', () {
-        final money = Money.fromInt(1, code: 'USD');
+        final money = Money.fromInt(1, isoCode: 'USD');
 
         expect(() => money.allocationAccordingTo([]), throwsArgumentError);
       });
 
       test('throws an error if any of ratios is negative', () {
-        final money = Money.fromInt(1, code: 'USD');
+        final money = Money.fromInt(1, isoCode: 'USD');
 
         expect(() => money.allocationAccordingTo([-1]), throwsArgumentError);
         expect(() => money.allocationAccordingTo([4, -1]), throwsArgumentError);
       });
 
       test('throws an error if sum of ratios euals zero', () {
-        final money = Money.fromInt(1, code: 'USD');
+        final money = Money.fromInt(1, isoCode: 'USD');
 
         expect(() => money.allocationAccordingTo([0]), throwsArgumentError);
         expect(() => money.allocationAccordingTo([0, 0]), throwsArgumentError);
@@ -283,12 +283,12 @@ void main() {
       test('provides list with allocated money values', () {
         void testAllocation(
             int minorUnits, List<int> ratios, List<int> result) {
-          final money = Money.fromInt(minorUnits, code: 'USD');
+          final money = Money.fromInt(minorUnits, isoCode: 'USD');
 
           expect(
               money.allocationAccordingTo(ratios),
               equals(result.map(
-                  (minorUnits) => Money.fromInt(minorUnits, code: 'USD'))));
+                  (minorUnits) => Money.fromInt(minorUnits, isoCode: 'USD'))));
         }
 
         // Allocation of zero amount:
@@ -326,7 +326,7 @@ void main() {
 
     group('allocation to targets', () {
       test('throws an error if number of targets less than one', () {
-        final money = Money.fromInt(100, code: 'USD');
+        final money = Money.fromInt(100, isoCode: 'USD');
 
         expect(() => money.allocationTo(0), throwsArgumentError);
         expect(() => money.allocationTo(-1), throwsArgumentError);
@@ -334,12 +334,13 @@ void main() {
 
       test('returns a list with values allocated among N targets', () {
         void testAllocation(int minorUnits, int targets, List<int> result) {
-          final money = Money.fromInt(minorUnits, code: 'USD');
+          final money = Money.fromInt(minorUnits, isoCode: 'USD');
 
           expect(
               money.allocationTo(targets),
               equals(result
-                  .map((minorUnits) => Money.fromInt(minorUnits, code: 'USD'))
+                  .map(
+                      (minorUnits) => Money.fromInt(minorUnits, isoCode: 'USD'))
                   .toList()));
         }
 
@@ -360,15 +361,15 @@ void main() {
     });
 
     test('currency property', () {
-      expect(
-          Currencies().find('USD'), Money.fromInt(1000, code: 'USD').currency);
-      expect(
-          Currencies().find('EUR'), Money.fromInt(1000, code: 'EUR').currency);
+      expect(Currencies().find('USD'),
+          Money.fromInt(1000, isoCode: 'USD').currency);
+      expect(Currencies().find('EUR'),
+          Money.fromInt(1000, isoCode: 'EUR').currency);
     });
 
     test('minorUnits property', () {
-      expect(Money.fromInt(2000, code: 'USD').minorUnits, BigInt.from(2000));
-      expect(Money.fromInt(1001, code: 'EUR').minorUnits, BigInt.from(1001));
+      expect(Money.fromInt(2000, isoCode: 'USD').minorUnits, BigInt.from(2000));
+      expect(Money.fromInt(1001, isoCode: 'EUR').minorUnits, BigInt.from(1001));
     });
   });
 }

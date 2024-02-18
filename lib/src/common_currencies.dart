@@ -38,8 +38,8 @@ class CommonCurrencies {
   /// Brazilian Real
   final Currency brl = Currency.create('BRL', 2,
       symbol: r'R$',
-      invertSeparators: true,
-      pattern: 'S0,00',
+      groupSeparator: '.',
+      decimalSeparator: ',',
       country: 'Brazil',
       unit: 'Real',
       name: 'Brazilian Real');
@@ -65,8 +65,9 @@ class CommonCurrencies {
   /// Czech Koruna
   final Currency czk = Currency.create('CZK', 2,
       symbol: 'Kč',
-      invertSeparators: true,
-      pattern: '0,00S',
+      groupSeparator: '.',
+      decimalSeparator: ',',
+      pattern: '0.00S',
       country: 'Czech',
       unit: 'Koruna',
       name: 'Czech Koruna');
@@ -74,8 +75,9 @@ class CommonCurrencies {
   /// European Union Euro
   final Currency euro = Currency.create('EUR', 2,
       symbol: '€',
-      invertSeparators: true,
-      pattern: '0,00S',
+      groupSeparator: '.',
+      decimalSeparator: ',',
+      pattern: '0.00S',
       country: 'European Union',
       unit: 'Euro',
       name: 'European Union Euro');
@@ -118,8 +120,9 @@ class CommonCurrencies {
   /// Polish Zloty
   final Currency pln = Currency.create('PLN', 2,
       symbol: 'zł',
-      invertSeparators: true,
-      pattern: '0,00S',
+      groupSeparator: '.',
+      decimalSeparator: ',',
+      pattern: '0.00S',
       country: 'Polish',
       unit: 'Zloty',
       name: 'Polish Zloty');

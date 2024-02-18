@@ -80,24 +80,25 @@ class Money implements Comparable<Money> {
   /// with [Money.parse()].
   ///
   /// [amount] - the monetary value.
-  /// [code] - the currency code of the [amount]. This must be either one
+  /// [isoCode] - the currency isoCode of the [amount]. This must be either one
   /// of the [CommonCurrencies] or a currency you have registered
   /// via [Currencies.register].
-  /// If the [scale] is provided then the [Money] instance is created with the
-  /// supplied [scale]. If [scale] isn't provided then the scale
-  /// from the [Currency]
-  /// associated with the [code]
-  /// Throws an [UnknownCurrencyException] if the [code] is not a registered
-  /// code.
-  factory Money.fromNum(num amount, {required String code, int? scale}) {
-    final currency = Currencies().find(code);
+  /// If the [decimalDigits] is provided then the [Money] instance is
+  /// created with the supplied number of [decimalDigits].
+  /// If [decimalDigits] isn't provided then the [decimalDigits] is taken
+  /// from the [Currency] associated with the [isoCode].
+  /// Throws an [UnknownCurrencyException] if the [isoCode] is not a registered
+  /// isoCode.
+  factory Money.fromNum(num amount,
+      {required String isoCode, int? decimalDigits}) {
+    final currency = Currencies().find(isoCode);
 
     if (currency == null) {
-      throw UnknownCurrencyException(code);
+      throw UnknownCurrencyException(isoCode);
     }
 
     return Money.fromNumWithCurrency(amount, currency,
-        scale: scale ?? currency.scale);
+        decimalDigits: decimalDigits ?? currency.decimalDigits);
   }
 
   /// Creates an instance of [Money] from a num holding the monetary value.
@@ -116,14 +117,17 @@ class Money implements Comparable<Money> {
   /// ```
   /// NOTE: be very careful using doubles to transport money as you are
   /// guarenteed to get rounding errors!!!  You should use a [String]
-  /// with [Money.parse()].
+  /// and [Money.parse()].
   ///
   /// [amount] - the monetary value.
-  /// [currency] - the currency code of the [amount].
+  /// [currency] - the currency of the [amount].
+  /// [decimalDigits] - allows you to set an alternate number of [decimalDigits]
+  ///     If not provided then [currency]'s [decimalDigits] are used.
   factory Money.fromNumWithCurrency(num amount, Currency currency,
-          {int? scale}) =>
+          {int? decimalDigits}) =>
       Money._from(
-          Fixed.fromNum(amount, scale: scale ?? currency.scale), currency);
+          Fixed.fromNum(amount, scale: decimalDigits ?? currency.decimalDigits),
+          currency);
 
   /// ******************************************
   /// Money.fromBigInt
@@ -140,19 +144,20 @@ class Money implements Comparable<Money> {
   /// 500 cents is $5 USD.
   /// let fiveDollars = Money.fromBigInt(BigInt.from(500), usd);
   ///
-  /// [code] - the currency code of the [minorUnits]. This must be either one
-  /// of the [CommonCurrencies] or a currency you have
+  /// [isoCode] - the currency isoCode of the [minorUnits]. This must be
+  /// either one of the [CommonCurrencies] or a currency you have
   /// registered via [Currencies.register].
-  /// Throws an [UnknownCurrencyException] if the [code] is not a registered
-  /// code.
+  /// Throws an [UnknownCurrencyException] if the [isoCode] is not a registered
+  /// isoCode.
   factory Money.fromBigInt(BigInt minorUnits,
-      {required String code, int? scale}) {
-    final currency = Currencies().find(code);
+      {required String isoCode, int? decimalDigits}) {
+    final currency = Currencies().find(isoCode);
     if (currency == null) {
-      throw UnknownCurrencyException(code);
+      throw UnknownCurrencyException(isoCode);
     }
 
-    return Money.fromBigIntWithCurrency(minorUnits, currency, scale: scale);
+    return Money.fromBigIntWithCurrency(minorUnits, currency,
+        decimalDigits: decimalDigits);
   }
 
   /// Creates an instance of [Money] from an amount represented by
@@ -167,8 +172,10 @@ class Money implements Comparable<Money> {
   /// let fiveDollars = Money.fromBigIntWithCurrency(BigInt.from(500), usd);
   ///
   factory Money.fromBigIntWithCurrency(BigInt minorUnits, Currency currency,
-          {int? scale}) =>
-      Money._from(Fixed.fromBigInt(minorUnits, scale: scale ?? currency.scale),
+          {int? decimalDigits}) =>
+      Money._from(
+          Fixed.fromBigInt(minorUnits,
+              scale: decimalDigits ?? currency.decimalDigits),
           currency);
 
   /// ******************************************
@@ -178,73 +185,85 @@ class Money implements Comparable<Money> {
   /// Creates an instance of [Money] from an integer.
   ///
   /// [minorUnits] - the no. minorUnits of the [currency], e.g (cents).
-  /// [code] - the currency code of the [minorUnits]. This must be either one
-  /// of the [CommonCurrencies] or a currency you have
-  /// registered via [Currencies.register].
+  /// [isoCode] - the currency isoCode of the [minorUnits].
+  ///     This must be either one of the [CommonCurrencies] or a currency
+  /// you have registered via [Currencies.register].
+  /// [decimalDigits] - the number of decimal digits to store.
   ///
-  /// Throws an [UnknownCurrencyException] if the [code] is not a registered
-  /// code.
-  factory Money.fromInt(int minorUnits, {required String code, int? scale}) {
-    final currency = Currencies().find(code);
+  /// Throws an [UnknownCurrencyException] if the [isoCode] is not a registered
+  /// isoCode.
+  factory Money.fromInt(int minorUnits,
+      {required String isoCode, int? decimalDigits}) {
+    final currency = Currencies().find(isoCode);
     if (currency == null) {
-      throw UnknownCurrencyException(code);
+      throw UnknownCurrencyException(isoCode);
     }
 
-    return Money.fromIntWithCurrency(minorUnits, currency, scale: scale);
+    return Money.fromIntWithCurrency(minorUnits, currency,
+        decimalDigits: decimalDigits);
   }
 
   /// Creates an instance of [Money] from an integer.
   ///
   /// [minorUnits] - the no. minorUnits of the [currency], e.g (cents).
   factory Money.fromIntWithCurrency(int minorUnits, Currency currency,
-          {int? scale}) =>
+          {int? decimalDigits}) =>
       Money._from(
-          Fixed.fromInt(minorUnits, scale: scale ?? currency.scale), currency);
+          Fixed.fromInt(minorUnits,
+              scale: decimalDigits ?? currency.decimalDigits),
+          currency);
 
   /// Creates a Money from a [Fixed] [amount].
   ///
-  /// The [amount] is scaled to match the currency selected via
-  /// [code].
-  /// If [code] isn't a valid currency then an [UnknownCurrencyException]
+  /// The [amount]'s decimal Digits are adjusted to match
+  /// the currency selected via [isoCode].
+  /// If [isoCode] isn't a valid currency then an [UnknownCurrencyException]
   /// is thrown.
-  factory Money.fromFixed(Fixed amount, {required String code, int? scale}) {
-    final currency = Currencies().find(code);
+  factory Money.fromFixed(Fixed amount,
+      {required String isoCode, int? decimalDigits}) {
+    final currency = Currencies().find(isoCode);
     if (currency == null) {
-      throw UnknownCurrencyException(code);
+      throw UnknownCurrencyException(isoCode);
     }
 
-    return Money.fromFixedWithCurrency(amount, currency, scale: scale);
+    return Money.fromFixedWithCurrency(amount, currency,
+        decimalDigits: decimalDigits);
   }
 
   /// Creates a Money from a [Fixed] [amount].
   ///
-  /// The [amount] is scaled to match the currency selected via
-  /// [currency].
+  /// The [amount]'s decimal digits are adjusted to match the
+  /// currency selected via [currency].
   factory Money.fromFixedWithCurrency(Fixed amount, Currency currency,
-          {int? scale}) =>
+          {int? decimalDigits}) =>
       Money._from(
-          Fixed.copyWith(amount, scale: scale ?? currency.scale), currency);
+          Fixed.copyWith(amount,
+              scale: decimalDigits ?? currency.decimalDigits),
+          currency);
 
   /// Creates a Money from a [Decimal] [amount].
   ///
-  /// The [amount] is scaled to match the currency selected via
-  /// [code].
-  /// If [code] isn't a valid currency then an [UnknownCurrencyException]
+  /// The [amount]'s decimal digits are adjusted
+  /// to match the currency selected via [isoCode].
+  /// If [isoCode] isn't a valid currency then an [UnknownCurrencyException]
   /// is thrown.
   factory Money.fromDecimal(Decimal amount,
-      {required String code, int? scale}) {
-    final currency = Currencies().find(code);
+      {required String isoCode, int? decimalDigits}) {
+    final currency = Currencies().find(isoCode);
     if (currency == null) {
-      throw UnknownCurrencyException(code);
+      throw UnknownCurrencyException(isoCode);
     }
 
-    return Money.fromDecimalWithCurrency(amount, currency, scale: scale);
+    return Money.fromDecimalWithCurrency(amount, currency,
+        decimalDigits: decimalDigits);
   }
 
   factory Money.fromDecimalWithCurrency(Decimal amount, Currency currency,
-          {int? scale}) =>
+          {int? decimalDigits}) =>
       Money._from(
-          Fixed.fromDecimal(amount, scale: scale ?? currency.scale), currency);
+          Fixed.fromDecimal(amount,
+              scale: decimalDigits ?? currency.decimalDigits),
+          currency);
 
   /// ******************************************
   /// Money.parse
@@ -254,7 +273,7 @@ class Money implements Comparable<Money> {
   ///
   /// The passed [amount] must match the given [pattern] or
   /// if no pattern is supplied the the default pattern of the
-  /// currency indicated by the [code]. The S and C characters
+  /// currency indicated by the [isoCode]. The S and C characters
   /// in the pattern are optional.
   ///
   /// See [format] for details on how to construct a [pattern].
@@ -262,29 +281,29 @@ class Money implements Comparable<Money> {
   /// Throws an MoneyParseException if the [amount] doesn't
   /// match the pattern.
   ///
-  /// If the number of decimals in [amount] exceeds the [Currency]s scale
-  ///  then excess digits will be ignored.
+  /// If the number of decimals in [amount] exceeds the [Currency]'s
+  /// decimalDigits then excess digits will be ignored.
   ///
-  /// [code] - the currency code of the [amount]. This must be either one
+  /// [isoCode] - the currency isoCode of the [amount]. This must be either one
   /// of the [CommonCurrencies] or a currency you have
   /// registered via [Currencies.register].
   ///
-  /// Throws an [UnknownCurrencyException] if the [code] is not a registered
-  /// code.
+  /// Throws an [UnknownCurrencyException] if the [isoCode] is not a registered
+  /// isoCode.
   factory Money.parse(String amount,
-      {required String code, String? pattern, int? scale}) {
+      {required String isoCode, String? pattern, int? decimalDigits}) {
     if (amount.isEmpty) {
       throw MoneyParseException('Empty amount passed.');
     }
 
-    final currency = Currencies().find(code);
+    final currency = Currencies().find(isoCode);
     if (currency == null) {
-      throw UnknownCurrencyException(code);
+      throw UnknownCurrencyException(isoCode);
     }
 
     try {
       return Money.parseWithCurrency(amount, currency,
-          scale: scale, pattern: pattern);
+          decimalDigits: decimalDigits, pattern: pattern);
       // ignore: avoid_catches_without_on_clauses
     } catch (e) {
       throw MoneyParseException(e.toString());
@@ -303,12 +322,12 @@ class Money implements Comparable<Money> {
   /// Throws an MoneyParseException if the [amount] doesn't
   /// match the pattern.
   ///
-  /// If the number of decimals in [amount] exceeds the [Currency]s scale
-  ///  then excess digits will be ignored.
+  /// If the number of decimals in [amount] exceeds the [Currency]'s
+  /// decimalDigits then excess digits will be ignored.
   ///
   /// [currency] - the currency of the [amount].
   factory Money.parseWithCurrency(String amount, Currency currency,
-      {String? pattern, int? scale}) {
+      {String? pattern, int? decimalDigits}) {
     if (amount.isEmpty) {
       throw MoneyParseException('Empty amount passed.');
     }
@@ -321,7 +340,8 @@ class Money implements Comparable<Money> {
       final data = decoder.decode(amount);
 
       return Money._from(
-          Fixed.copyWith(data.amount, scale: scale ?? currency.scale),
+          Fixed.copyWith(data.amount,
+              scale: decimalDigits ?? currency.decimalDigits),
           currency);
       // ignore: avoid_catches_without_on_clauses
     } catch (e) {
@@ -369,10 +389,10 @@ class Money implements Comparable<Money> {
   /// The same as [Money.parse]  but returns null if we are unable to
   /// [Money.parse] the [monetaryAmount]
   static Money? tryParse(String monetaryAmount,
-      {required String code, String? pattern, int? scale}) {
+      {required String isoCode, String? pattern, int? decimalDigits}) {
     try {
       return Money.parse(monetaryAmount,
-          code: code, pattern: pattern, scale: scale);
+          isoCode: isoCode, pattern: pattern, decimalDigits: decimalDigits);
       // ignore: avoid_catches_without_on_clauses
     } catch (_) {
       return null;
@@ -388,15 +408,18 @@ class Money implements Comparable<Money> {
   /// You can specify 1,2 or 3 C's
   ///       * C - U
   ///       * CC - US
-  ///       * CCC - USD - outputs the full currency code regardless of length.
+  ///       * CCC - USD - outputs the full currency isoCode regardless
+  ///               of length.
   ///   * &#35; denotes a digit.
   ///   * 0 denotes a digit and with the addition of defining leading
   /// and trailing zeros.
   ///   * , (comma) a placeholder for the grouping separtor
   ///   * . (period) a place holder fo rthe decimal separator
   ///
-  /// Note: if [Currency.invertSeparators] is true then the meaning of comma
-  ///   and period are swapped.
+  /// Note: even if you use the groupSeparator or decimalSeparator
+  /// to use alternate separators the pattern must still use ',' and '.'
+  /// for the group and decimal separators respectively.
+  /// This method allows a single pattern to be used by multiple currencies.
   ///
   /// Example:
   /// ```dart
@@ -427,7 +450,7 @@ class Money implements Comparable<Money> {
   /// The component of the number after the decimal point.
   BigInt get decimalPart => amount.decimalPart;
 
-  int get scale => amount.scale;
+  int get decimalDigits => amount.scale;
 
   // Encoding/Decoding *******************************************************
 
@@ -443,7 +466,8 @@ class Money implements Comparable<Money> {
     final data = decoder.decode(value);
 
     return Money._from(
-        Fixed.copyWith(data.amount, scale: data.currency.scale), data.currency);
+        Fixed.copyWith(data.amount, scale: data.currency.decimalDigits),
+        data.currency);
   }
 
   /// Encodes a [Money] instance as a <T>.
@@ -491,7 +515,7 @@ class Money implements Comparable<Money> {
   /* Comparison ***************************************************************/
 
   /// Returns `true` if this money value is in the specified [currency].
-  bool isInCurrency(String code) => currency == Currencies().find(code);
+  bool isInCurrency(String isoCode) => currency == Currencies().find(isoCode);
   bool isInCurrencyWithCurrency(Currency other) => currency == other;
 
   /// Returns `true` if this money value is in same currency as [other].
@@ -610,12 +634,13 @@ class Money implements Comparable<Money> {
   }
 
   /// Returns [Money] multiplied by [multiplier], using schoolbook rounding.
-  Money operator *(num multiplier) => _withAmount(
-      Fixed.copyWith(amount.multiply(multiplier), scale: currency.scale));
+  Money operator *(num multiplier) =>
+      _withAmount(Fixed.copyWith(amount.multiply(multiplier),
+          scale: currency.decimalDigits));
 
   /// Returns [Money] divided by [divisor], using schoolbook rounding.
   Money operator /(num divisor) => _withAmount(
-      Fixed.copyWith(amount.divide(divisor), scale: currency.scale));
+      Fixed.copyWith(amount.divide(divisor), scale: currency.decimalDigits));
 
   /// Divides this by [divisor] and returns the result as a double
   double dividedBy(Money divisor) {

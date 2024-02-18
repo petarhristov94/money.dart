@@ -30,14 +30,14 @@ void main() {
     expect(parsed.format('SCCC 0.00'), equals(r'$USD 10.00'));
 
 // Create money from an int which contains the MajorUnit (e.g dollars)
-    final buyPrice = Money.fromNum(10, code: 'AUD');
+    final buyPrice = Money.fromNum(10, isoCode: 'AUD');
     expect(buyPrice.toString(), equals(r'$10.00'));
 
 // Create money from a double which contains Major and Minor units
 //  (e.g. dollars and cents)
 // We don't recommend transporting money as a double as you will get
 //    rounding errors.
-    final sellPrice = Money.fromNum(10.50, code: 'AUD');
+    final sellPrice = Money.fromNum(10.50, isoCode: 'AUD');
     expect(sellPrice.toString(), equals(r'$10.50'));
   });
 }

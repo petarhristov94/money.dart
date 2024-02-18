@@ -10,7 +10,7 @@ import 'package:test/test.dart';
 class _TestEncoder implements MoneyEncoder<String> {
   @override
   String encode(MoneyData data) =>
-      '${data.currency.code} ${data.amount.minorUnits}';
+      '${data.currency.isoCode} ${data.amount.minorUnits}';
 }
 
 class _TestDecoder implements MoneyDecoder<MoneyData> {

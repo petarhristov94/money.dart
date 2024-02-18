@@ -9,17 +9,17 @@ import 'package:test/test.dart';
 
 void main() {
   group('A currency', () {
-    test('has a code and a precision', () {
+    test('has an isoCode and a precision', () {
       var currency = Currency.create('JPY', 0);
-      expect(currency.code, equals('JPY'));
-      expect(currency.scale, equals(0));
+      expect(currency.isoCode, equals('JPY'));
+      expect(currency.decimalDigits, equals(0));
 
       currency = Currency.create('USD', 2);
-      expect(currency.code, equals('USD'));
-      expect(currency.scale, equals(2));
+      expect(currency.isoCode, equals('USD'));
+      expect(currency.decimalDigits, equals(2));
     });
 
-    test('cannot be instantiated with empty code', () {
+    test('cannot be instantiated with empty isoCode', () {
       expect(() => Currency.create('', 0), throwsArgumentError);
     });
 

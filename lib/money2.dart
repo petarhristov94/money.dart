@@ -9,7 +9,7 @@
 ///
 ///
 /// The [Currency] class allows you to define the key attributes of a currency
-/// such as Symbol, Code, precision and a default format.
+/// such as Symbol, isoCode, precision and a default format.
 ///
 /// The [Money] class stores the underlying values using a BigInt. The value
 /// is stored using the currencies 'minor' units (e.g. cents).
@@ -33,7 +33,7 @@
 /// The package use the following terms:
 /// * Minor Units - the smallest unit of a currency e.g. cents.
 /// * Major Units - the integer component of a currency - e.g. dollars
-/// * code - the currency code. e.g. USD
+/// * isoCode - the currency isoCode. e.g. USD
 /// * symbol - the currency symbol. e.g. '$'. It should be noted that not
 ///    every currency has a symbol.
 /// * pattern - a pattern used to control the display format.

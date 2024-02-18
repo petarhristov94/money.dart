@@ -27,46 +27,49 @@ import 'pattern_decoder.dart';
 //@sealed
 @immutable
 class Currency {
-  /// Creates a currency with a given [code] and [scale].
+  /// Creates a currency with a given [isoCode] and [decimalDigits].
   ///
-  /// * [code] - the currency code e.g. USD
-  /// * [scale] - the number of digits after the decimal place the
+  /// * [isoCode] - the currency isoCode e.g. USD
+  /// * [decimalDigits] - the number of digits after the decimal place the
   /// the currency uses. e.g. 2 for USD as it uses cents to 2 digits.
   /// * [pattern] - the default output format used when you call toString
   /// on a Money instance created with this currency. See [Money.format]
   /// for details on the supported patterns.
-  /// * [invertSeparators] - normally the decimal separator is '.' and the
-  /// group separator is ','. When this value is true (defaults to false)
-  /// then the separators are swapped. This is needed for most non English
-  /// speaking [Currency]s.
-  Currency.create(this.code, this.scale,
+  /// [groupSeparator] controls the character used to separate blocks of 1000.
+  ///  e.g. 1,000,000.
+  /// By default the [groupSeparator] is ','
+  /// [decimalSeparator] controls the character used for the decimal place.
+  /// By default the [decimalSeparator] is '.'
+  Currency.create(this.isoCode, this.decimalDigits,
       {this.symbol = r'$',
       this.pattern = defaultPattern,
-      this.invertSeparators = false,
+      this.groupSeparator = ',',
+      this.decimalSeparator = '.',
       this.country = '',
       this.unit = '',
       this.name = ''})
-      : scaleFactor = Currency._calcPrecisionFactor(scale),
-        decimalSeparator = invertSeparators ? ',' : '.',
-        groupSeparator = invertSeparators ? '.' : ',' {
-    if (code.isEmpty) {
-      throw ArgumentError.value(code, 'code', 'Must be a non-empty string.');
+      : scaleFactor = Currency._calcPrecisionFactor(decimalDigits) {
+    if (isoCode.isEmpty) {
+      throw ArgumentError.value(
+          isoCode, 'isoCode', 'Must be a non-empty string.');
     }
   }
   static const String defaultPattern = 'S0.00';
 
   /// Creates a [Currency] from an existing [Currency] with changes.
   Currency copyWith({
-    String? code,
+    String? isoCode,
     int? precision,
     String? symbol,
     String? pattern,
-    bool? invertSeparators,
+    String? groupSeparator,
+    String? decimalSeparator,
   }) =>
-      Currency.create(code ?? this.code, precision ?? scale,
+      Currency.create(isoCode ?? this.isoCode, precision ?? decimalDigits,
           symbol: symbol ?? this.symbol,
           pattern: pattern ?? this.pattern,
-          invertSeparators: invertSeparators ?? this.invertSeparators);
+          groupSeparator: groupSeparator ?? this.groupSeparator,
+          decimalSeparator: decimalSeparator ?? this.decimalSeparator);
 
   /// Takes a monetary amount encoded as a string
   /// and converts it to a [Money] instance.
@@ -96,19 +99,19 @@ class Currency {
     return Money.fromFixedWithCurrency(moneyData.amount, this);
   }
 
-  /// The code of the currency (e.g. 'USD').
-  final String code;
+  /// The isoCode of the currency (e.g. 'USD').
+  final String isoCode;
 
   /// The currency symbol (e.g. $)
   final String symbol;
 
   /// The number of decimals for the currency (zero or more).
-  final int scale;
+  final int decimalDigits;
 
   /// The factor of 10 to divide a minor value by to get the intended
   /// currency value.
   ///
-  ///  e.g. if [scale] is 2 then this value will be 100.
+  ///  e.g. if [decimalDigits] is 2 then this value will be 100.
   final BigInt scaleFactor;
 
   /// the default pattern used to format and parse monetary amounts for this
@@ -124,13 +127,6 @@ class Currency {
   /// The name of the currency. e.g. Australian Dollar
   final String name;
 
-  /// Most western currencies use the period as the decimal separator
-  /// and comma for formating.
-  ///
-  // Some other currencies invert the use of periods and commas.
-  /// If this value is true then the use of the period and comma is swapped.
-  final bool invertSeparators;
-
   /// The character used for the decimal place
   final String decimalSeparator;
 
@@ -138,16 +134,17 @@ class Currency {
   final String groupSeparator;
 
   @override
-  int get hashCode => code.hashCode;
+  int get hashCode => isoCode.hashCode;
 
   /// Two currencies are considered equivalent if the
-  /// [code] and [scale] are the same.
+  /// [isoCode] and [decimalDigits] are the same.
   ///
   /// Are we breaking the semantics of the == operator?
-  /// Maybe we need another method that just compares the code?
+  /// Maybe we need another method that just compares the isoCode?
   @override
   bool operator ==(covariant Currency other) =>
-      identical(this, other) || (code == other.code && scale == other.scale);
+      identical(this, other) ||
+      (isoCode == other.isoCode && decimalDigits == other.decimalDigits);
 
   static BigInt _calcPrecisionFactor(int precision) {
     if (precision.isNegative) {

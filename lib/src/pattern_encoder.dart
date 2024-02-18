@@ -12,9 +12,13 @@ import 'money.dart';
 import 'money_data.dart';
 import 'util.dart';
 
+/// Patterns must always use these separators
+/// regardless of the currencies separator.
+const String patternDecimalSeparator = '.';
+const String patternGroupSeparator = ',';
+
 /// Formats a monetary value to a String based on a pattern.
 class PatternEncoder implements MoneyEncoder<String> {
-  ///s
   PatternEncoder(this.money, this.pattern);
 
   /// the amount to encode
@@ -28,15 +32,15 @@ class PatternEncoder implements MoneyEncoder<String> {
     String formatted;
 
     final decimalSeperatorCount =
-        data.currency.decimalSeparator.allMatches(pattern).length;
+        patternDecimalSeparator.allMatches(pattern).length;
 
     if (decimalSeperatorCount > 1) {
       throw IllegalPatternException(
           'A format Pattern may contain, at most, a single decimal '
-          "separator '${data.currency.decimalSeparator}'");
+          "separator '$patternDecimalSeparator'");
     }
 
-    var decimalSeparatorIndex = pattern.indexOf(data.currency.decimalSeparator);
+    var decimalSeparatorIndex = pattern.indexOf(patternDecimalSeparator);
 
     var hasMinor = true;
     if (decimalSeparatorIndex == -1) {
@@ -72,7 +76,7 @@ class PatternEncoder implements MoneyEncoder<String> {
 
     // extract the contiguous money components made up of 0 # , and .
     final moneyPattern = _getMoneyPattern(majorPattern);
-    _checkZeros(moneyPattern, data.currency.groupSeparator, minor: false);
+    _checkZeros(moneyPattern, patternGroupSeparator, minor: false);
 
     final integerPart = data.integerPart;
 
@@ -82,7 +86,7 @@ class PatternEncoder implements MoneyEncoder<String> {
     // replace the the money components with a single #
     var compressedMajorPattern = _compressMoney(majorPattern);
 
-    final code = _getCode(data, compressedMajorPattern);
+    final isoCode = _getIsoCode(data, compressedMajorPattern);
     // replaces multiple C's with a single C
     compressedMajorPattern = _compressC(compressedMajorPattern);
 
@@ -98,7 +102,7 @@ class PatternEncoder implements MoneyEncoder<String> {
           formatted += data.currency.symbol;
           break;
         case 'C':
-          formatted += code;
+          formatted += isoCode;
           break;
         case '#':
           formatted += formattedMajorUnits;
@@ -121,45 +125,35 @@ class PatternEncoder implements MoneyEncoder<String> {
   ///
   String _getFormattedMajorUnits(
       MoneyData data, String moneyPattern, BigInt majorUnits) {
-    String normalisedMoneyPattern;
-    if (data.currency.invertSeparators) {
-      // the NumberFormat doesn't like the inverted characters
-      // so we normalise them for the conversion.
-      normalisedMoneyPattern = moneyPattern.replaceAll('.', ',');
-    } else {
-      normalisedMoneyPattern = moneyPattern;
-    }
     // format the no. into that pattern.
     var formattedMajorUnits =
-        NumberFormat(normalisedMoneyPattern).format(majorUnits.toInt());
+        NumberFormat(moneyPattern).format(majorUnits.toInt());
 
     if (!majorUnits.isNegative && data.amount.isNegative) {
       formattedMajorUnits = '-$formattedMajorUnits';
     }
 
-    if (data.currency.invertSeparators) {
-      // Now convert them back
-      formattedMajorUnits = formattedMajorUnits.replaceAll(',', '.');
-    }
-    return formattedMajorUnits;
+    // Convert to the MoneyData's preferred group separator
+    return formattedMajorUnits.replaceAll(
+        patternGroupSeparator, data.currency.groupSeparator);
   }
 
-  /// returns the currency code from [data] using the
-  /// supplied [pattern] to find the code.
-  String _getCode(MoneyData data, String pattern) {
+  /// returns the currency isoCode from [data] using the
+  /// supplied [pattern] to find the isoCode.
+  String _getIsoCode(MoneyData data, String pattern) {
     // find the contigous 'C'
-    final codeLength = 'C'.allMatches(pattern).length;
+    final isoCodeLength = 'C'.allMatches(pattern).length;
 
-    // get the code based on the no. of C's.
-    String code;
-    if (codeLength == 3) {
-      // Three Cs means the whole code.
-      code = data.currency.code;
+    // get the isoCode based on the no. of C's.
+    String isoCode;
+    if (isoCodeLength == 3) {
+      // Three Cs means the whole isoCode.
+      isoCode = data.currency.isoCode;
     } else {
-      code = data.currency.code
-          .substring(0, min(codeLength, data.currency.code.length));
+      isoCode = data.currency.isoCode
+          .substring(0, min(isoCodeLength, data.currency.isoCode.length));
     }
-    return code;
+    return isoCode;
   }
 
   /// Just extract the number specific format chacters leaving out
@@ -220,13 +214,11 @@ class PatternEncoder implements MoneyEncoder<String> {
   String _formatMinorPart(MoneyData data, String minorPattern) {
     var formatted = '';
 
-    final groupSeparator = data.currency.groupSeparator;
-
     // extract the contiguous money components made up of 0 # , and .
     var moneyPattern = _getMoneyPattern(minorPattern);
 
     /// check that the zeros are only at the end of the pattern.
-    _checkZeros(moneyPattern, groupSeparator, minor: true);
+    _checkZeros(moneyPattern, patternGroupSeparator, minor: true);
 
     /// If there are trailing zeros in the pattern then we must ensure
     /// the final string is at least [requiredPatternWidth] or if
@@ -258,7 +250,7 @@ class PatternEncoder implements MoneyEncoder<String> {
     var formattedMinorUnits =
         NumberFormat(moneyPattern).format(decimalPart.toInt());
 
-    /// If the we have a scale of 4 and minorunits = 10
+    /// If the we have [decimalDigits] of 4 and minorunits = 10
     /// then the number format will produce 10 rather than 0010
     /// So we need to add leading zeros
     if (formattedMinorUnits.length < data.amount.scale) {
@@ -304,7 +296,7 @@ class PatternEncoder implements MoneyEncoder<String> {
     // replace the the money components with a single #
     var compressedMinorPattern = _compressMoney(minorPattern);
 
-    final code = _getCode(data, compressedMinorPattern);
+    final isoCode = _getIsoCode(data, compressedMinorPattern);
     // replaces multiple C's with a single S
     compressedMinorPattern = _compressC(compressedMinorPattern);
 
@@ -319,7 +311,7 @@ class PatternEncoder implements MoneyEncoder<String> {
           formatted += data.currency.symbol;
           break;
         case 'C':
-          formatted += code;
+          formatted += isoCode;
           break;
         case '#':
           formatted += formattedMinorUnits;

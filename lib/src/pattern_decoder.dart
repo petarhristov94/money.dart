@@ -11,6 +11,7 @@ import 'currency.dart';
 import 'encoders.dart';
 import 'money.dart';
 import 'money_data.dart';
+import 'pattern_encoder.dart';
 import 'util.dart';
 
 /// Parses a String containing a monetary amount based on a pattern.
@@ -36,7 +37,7 @@ class PatternDecoder implements MoneyDecoder<String> {
     var majorUnits = BigInt.zero;
     var minorUnits = BigInt.zero;
 
-    final code = currency.code;
+    final isoCode = currency.isoCode;
 
     var compressedPattern = compressDigits(pattern);
     compressedPattern = compressWhitespace(compressedPattern);
@@ -57,7 +58,7 @@ class PatternDecoder implements MoneyDecoder<String> {
           if (possibleSymbol == currency.symbol) {
             valueQueue.takeN(currency.symbol.length);
           } else {
-            if (!isNumeric(possibleSymbol) && !isCode(possibleSymbol)) {
+            if (!isNumeric(possibleSymbol) && !isIsoCode(possibleSymbol)) {
               throw MoneyParseException.fromValue(
                   compressedPattern: compressedPattern,
                   patternIndex: i,
@@ -69,14 +70,14 @@ class PatternDecoder implements MoneyDecoder<String> {
 
           break;
         case 'C':
-          if (codeIndex >= code.length) {
+          if (codeIndex >= isoCode.length) {
             throw MoneyParseException(
-                'The pattern has more currency code "C" characters '
+                'The pattern has more currency isoCode "C" characters '
                 '($codeIndex + 1) than the length of the passed currency.');
           }
           final char = valueQueue.peek();
 
-          if (char != code[codeIndex]) {
+          if (char != isoCode[codeIndex]) {
             if (!isNumeric(char) && !isSymbol(char)) {
               throw MoneyParseException.fromValue(
                   compressedPattern: compressedPattern,
@@ -143,7 +144,7 @@ class PatternDecoder implements MoneyDecoder<String> {
 
     final value = currency.toMinorUnits(majorUnits, minorUnits);
     final result = MoneyData.from(
-        Fixed.fromBigInt(value, scale: currency.scale), currency);
+        Fixed.fromBigInt(value, scale: currency.decimalDigits), currency);
     return result;
   }
 
@@ -151,13 +152,10 @@ class PatternDecoder implements MoneyDecoder<String> {
   /// Compresses all 0 # , . characters into a single #.#
   ///
   String compressDigits(String pattern) {
-    final decimalSeparator = currency.decimalSeparator;
-    final groupSeparator = currency.groupSeparator;
-
     var result = '';
 
-    final regExPattern =
-        '([#|0|$groupSeparator]+)(?:$decimalSeparator([#|0]+))?';
+    const regExPattern =
+        '([#|0|$patternGroupSeparator]+)(?:$patternDecimalSeparator([#|0]+))?';
 
     final regEx = RegExp(regExPattern);
 
@@ -170,7 +168,7 @@ class PatternDecoder implements MoneyDecoder<String> {
 
     if (matches.length != 1) {
       throw MoneyParseException(
-          'The pattern contained more than one numberic pattern.'
+          'The pattern contained more than one numeric pattern.'
           " Check you don't have spaces in the numeric parts of the pattern.");
     }
 
@@ -185,7 +183,7 @@ class PatternDecoder implements MoneyDecoder<String> {
 
       /// We force the capture of all minor units by ensuring the
       /// pattern always contains a .#.
-      final decimalLocation = result.indexOf(decimalSeparator);
+      final decimalLocation = result.indexOf(patternDecimalSeparator);
       if (decimalLocation == -1) {
         final majorLocation = result.indexOf('#');
         result = '${result.substring(0, majorLocation + 1)}.'
@@ -211,10 +209,10 @@ class PatternDecoder implements MoneyDecoder<String> {
     return value.replaceAll(regEx, '');
   }
 
-  bool isCode(String value) {
-    final code = currency.code;
+  bool isIsoCode(String value) {
+    final isoCode = currency.isoCode;
     for (final char in value.codeUnits) {
-      if (!code.contains(char.toString())) {
+      if (!isoCode.contains(char.toString())) {
         return false;
       }
     }
@@ -305,7 +303,7 @@ class ValueQueue {
   }
 
   /// Takes any remaining digits as minor digits.
-  /// If there are less digits than [Currency.scale]
+  /// If there are less digits than [Currency.decimalDigits]
   /// then we pad the number with zeros before we convert it to an it.
   ///
   /// e.g.
@@ -314,13 +312,13 @@ class ValueQueue {
   BigInt takeMinorDigits(Currency currency) {
     var digits = _takeDigits();
 
-    if (digits.length < currency.scale) {
-      digits += '0' * max(0, currency.scale - digits.length);
+    if (digits.length < currency.decimalDigits) {
+      digits += '0' * max(0, currency.decimalDigits - digits.length);
     }
 
     // we have no way of storing less than a minorDigit is this a problem?
-    if (digits.length > currency.scale) {
-      digits = digits.substring(0, currency.scale);
+    if (digits.length > currency.decimalDigits) {
+      digits = digits.substring(0, currency.decimalDigits);
     }
 
     return BigInt.parse(digits);

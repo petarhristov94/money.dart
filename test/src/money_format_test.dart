@@ -10,11 +10,11 @@ import 'package:test/test.dart';
 void main() {
   Currencies().register(Currency.create('LONG', 2));
 
-  final usd10d25 = Money.fromInt(1025, code: 'USD');
-  final usd10 = Money.fromInt(1000, code: 'USD');
-  final long1000d90 = Money.fromInt(100090, code: 'LONG');
-  final usd20cents = Money.fromInt(20, code: 'USD');
-  final btc1satoshi = Money.fromInt(1, code: 'BTC');
+  final usd10d25 = Money.fromInt(1025, isoCode: 'USD');
+  final usd10 = Money.fromInt(1000, isoCode: 'USD');
+  final long1000d90 = Money.fromInt(100090, isoCode: 'LONG');
+  final usd20cents = Money.fromInt(20, isoCode: 'USD');
+  final btc1satoshi = Money.fromInt(1, isoCode: 'BTC');
 
   group('format', () {
     test('Simple Number', () {
@@ -48,25 +48,59 @@ void main() {
     });
 
     test('Inverted Decimal Separator', () {
-      final eurolarge = Money.fromInt(10000000, code: 'EUR');
-      final euroSmall = Money.fromInt(1099, code: 'EUR');
+      final eurolarge = Money.fromInt(10000000, isoCode: 'EUR');
+      final euroSmall = Money.fromInt(1099, isoCode: 'EUR');
       expect(eurolarge.toString(), equals('100000,00€'));
       expect(euroSmall.format('S#'), equals('€10'));
-      expect(euroSmall.format('#,#'), equals('10,9'));
-      expect(euroSmall.format('CCC#,#0'), equals('EUR10,99'));
-      expect(euroSmall.format('###.000,##'), equals('010,99'));
-      expect(eurolarge.format('###.000,00'), equals('100.000,00'));
-      expect(euroSmall.format('##,##'), equals('10,99'));
+      expect(euroSmall.format('#.#'), equals('10,9'));
+      expect(euroSmall.format('CCC#.#0'), equals('EUR10,99'));
+      expect(euroSmall.format('###,000.##'), equals('010,99'));
+      expect(eurolarge.format('###,000.00'), equals('100.000,00'));
+      expect(euroSmall.format('##.##'), equals('10,99'));
       expect(euroSmall.format('##'), equals('10'));
     });
+
+    test('Custom Separators', () {
+      final test = Currency.create('TEST', 3,
+          groupSeparator: 'g',
+          decimalSeparator: 'd',
+          symbol: 'T',
+          pattern: 'S###,###.000');
+      Currencies().register(test);
+      final eurolarge = Money.fromInt(100000000, isoCode: 'TEST');
+      final euroSmall = Money.fromInt(10999, isoCode: 'TEST');
+      expect(eurolarge.toString(), equals('T100g000d000'));
+      expect(euroSmall.format('S#'), equals('T10'));
+      expect(euroSmall.format('#.#'), equals('10d9'));
+      expect(euroSmall.format('CCC#.##0'), equals('TEST10d999'));
+      expect(euroSmall.format('###,000.###'), equals('010d999'));
+      expect(eurolarge.format('###,000.000'), equals('100g000d000'));
+      expect(euroSmall.format('##.###'), equals('10d999'));
+      expect(euroSmall.format('##'), equals('10'));
+    });
+
+    test('decimal separator as slash', () {
+      final euroCurrency = Currency.create('EUR', 2,
+          decimalSeparator: '/',
+          groupSeparator: ' ',
+          symbol: '€',
+          pattern: '###,###.##S');
+
+      final amount =
+          Money.fromIntWithCurrency(1234567890, euroCurrency, decimalDigits: 3);
+      final formatted = amount.toString();
+      expect(formatted, '1 234 567/89€');
+    });
+
     test('Lead zero USD', () {
+      expect(Money.fromInt(310, isoCode: 'USD').format('000.00'),
+          equals('003.10'));
       expect(
-          Money.fromInt(310, code: 'USD').format('000.00'), equals('003.10'));
-      expect(Money.fromInt(310, code: 'USD').format('000.##'), equals('003.1'));
-      expect(
-          Money.fromInt(301, code: 'USD').format('000.00'), equals('003.01'));
-      expect(
-          Money.fromInt(301, code: 'USD').format('000.##'), equals('003.01'));
+          Money.fromInt(310, isoCode: 'USD').format('000.##'), equals('003.1'));
+      expect(Money.fromInt(301, isoCode: 'USD').format('000.00'),
+          equals('003.01'));
+      expect(Money.fromInt(301, isoCode: 'USD').format('000.##'),
+          equals('003.01'));
       expect(usd10d25.format('000.##'), equals('010.25'));
       expect(usd10d25.format('000'), equals('010'));
     });
@@ -74,8 +108,8 @@ void main() {
     test('trailing zero USD', () {
       expect(usd10d25.format('##.000'), equals('10.250'));
       expect(usd10d25.format('000'), equals('010'));
-      expect(
-          Money.fromInt(301, code: 'USD').format('000.000'), equals('003.010'));
+      expect(Money.fromInt(301, isoCode: 'USD').format('000.000'),
+          equals('003.010'));
     });
 
     test('trailing zero when pattern have trailing symbol', () {
@@ -88,9 +122,9 @@ void main() {
     });
 
     test('less than 10 cents USD in minor units', () {
-      expect(Money.fromInt(01, code: 'USD').toString(), r'$0.01');
-      expect(Money.fromInt(301, code: 'USD').toString(), r'$3.01');
-      expect(Money.fromNum(3.01, code: 'USD').toString(), r'$3.01');
+      expect(Money.fromInt(01, isoCode: 'USD').toString(), r'$0.01');
+      expect(Money.fromInt(301, isoCode: 'USD').toString(), r'$3.01');
+      expect(Money.fromNum(3.01, isoCode: 'USD').toString(), r'$3.01');
     });
 
     test('Symbol tests', () {
@@ -132,9 +166,9 @@ void main() {
 
       final exchangeRate = ExchangeRate.fromMinorUnits(
         212345678,
-        scale: 8,
+        decimalDigits: 8,
         fromCode: 'CUR1',
-        toCode: receiveCurrency.code,
+        toCode: receiveCurrency.isoCode,
       );
       expect('$exchangeRate', equals('2.12345678'));
 
@@ -142,7 +176,7 @@ void main() {
       expect('$receiveAmount', equals(r'$2.61185184'));
 
       final exchangeTwoDigits = ExchangeRate.fromMinorUnits(100,
-          scale: 2, fromCode: 'EXC', toCode: 'CUR1');
+          decimalDigits: 2, fromCode: 'EXC', toCode: 'CUR1');
 
       final receiveAmountTwoDigits =
           receiveAmount.exchangeTo(exchangeTwoDigits);

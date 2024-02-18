@@ -25,9 +25,8 @@ class ExchangePlatform {
 
   /// Register an exchange rate with this platform.
   void register(ExchangeRate exchangeRate) {
-    exchangeMap[_generate(
-            exchangeRate.fromCurrency.code, exchangeRate.toCurrency.code)] =
-        exchangeRate;
+    exchangeMap[_generate(exchangeRate.fromCurrency.isoCode,
+        exchangeRate.toCurrency.isoCode)] = exchangeRate;
   }
 
   /// Converts [from] to the [to] currency using
@@ -38,26 +37,26 @@ class ExchangePlatform {
   ///
   /// If no exchange can be calculated an [UnknownExchangeRateException]
   /// will be thrown.
-  Money exchangeTo(Money from, CurrencyCode to, {bool useInversion = true}) {
-    var exchangeRate = exchangeMap[_generate(from.currency.code, to)];
+  Money exchangeTo(Money from, CurrencyIsoCode to, {bool useInversion = true}) {
+    var exchangeRate = exchangeMap[_generate(from.currency.isoCode, to)];
 
     if (exchangeRate != null) {
       return exchangeRate.applyRate(from);
     }
 
-    /// try the inverse code pari
+    /// try the inverse isoCode pair
     exchangeRate = exchangeMap[_generate(
       to,
-      from.currency.code,
+      from.currency.isoCode,
     )];
 
     if (exchangeRate != null && useInversion) {
       return exchangeRate.applyInverseRate(from);
     }
-    throw UnknownExchangeRateException(from.currency.code, to);
+    throw UnknownExchangeRateException(from.currency.isoCode, to);
   }
 
-  _CodePair _generate(CurrencyCode from, CurrencyCode to) => '$from:$to';
+  _CodePair _generate(CurrencyIsoCode from, CurrencyIsoCode to) => '$from:$to';
 }
 
 /// Thrown if an attempt is made to calcuate the value of a [Money] amount
@@ -66,11 +65,11 @@ class UnknownExchangeRateException implements MoneyException {
   /// Thrown if no exchange rate exists between [from] and [to]
   UnknownExchangeRateException(this.from, this.to);
 
-  /// The from currency code in the unknown exchange
-  CurrencyCode from;
+  /// The from currency isoCode in the unknown exchange
+  CurrencyIsoCode from;
 
-  /// The to  currency code in the unknown exchange
-  CurrencyCode to;
+  /// The to  currency isoCode in the unknown exchange
+  CurrencyIsoCode to;
 
   @override
   String toString() =>

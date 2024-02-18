@@ -7,46 +7,48 @@ import 'package:money2/money2.dart';
 import 'package:test/test.dart';
 
 void main() {
-  test('default scale ...', () async {
+  test('default decimalDigits ...', () async {
     final platform = ExchangePlatform();
 
-    final aud = Money.fromNum(1, scale: 2, code: 'AUD');
-    final usd = Money.fromNum(0.75312, scale: 2, code: 'USD');
+    final aud = Money.fromNum(1, decimalDigits: 2, isoCode: 'AUD');
+    final usd = Money.fromNum(0.75312, decimalDigits: 2, isoCode: 'USD');
 
-    /// use target currency scale
+    /// use target currency decimalDigits
     platform.register(ExchangeRate.fromFixed(
       Fixed.fromNum(0.75312, scale: 5),
-      fromCode: 'AUD',
-      toCode: 'USD',
+      fromIsoCode: 'AUD',
+      toIsoCode: 'USD',
     ));
 
     final t1 = platform.exchangeTo(aud, 'USD');
-    expect(t1, equals(Money.fromNum(0.75312, scale: 2, code: 'USD')));
-    expect(t1.scale, equals(2));
+    expect(
+        t1, equals(Money.fromNum(0.75312, decimalDigits: 2, isoCode: 'USD')));
+    expect(t1.decimalDigits, equals(2));
 
     /// Use the automatic inverse rate
     final t2 = platform.exchangeTo(usd, 'AUD');
-    expect(t2, equals(Money.fromNum(1, scale: 2, code: 'AUD')));
-    expect(t2.scale, equals(2));
+    expect(t2, equals(Money.fromNum(1, decimalDigits: 2, isoCode: 'AUD')));
+    expect(t2.decimalDigits, equals(2));
   });
 
-  test('controlled scale ...', () async {
+  test('controlled decimal Digits ...', () async {
     final platform = ExchangePlatform();
 
-    final aud = Money.fromNum(1, scale: 2, code: 'AUD');
-    final usd = Money.fromNum(0.75312, scale: 5, code: 'USD');
+    final aud = Money.fromNum(1, decimalDigits: 2, isoCode: 'AUD');
+    final usd = Money.fromNum(0.75312, decimalDigits: 5, isoCode: 'USD');
 
-    /// control the target scale.
+    /// control the target decimal Digits.
     platform.register(ExchangeRate.fromFixed(Fixed.fromNum(0.75312, scale: 5),
-        fromCode: 'AUD', toCode: 'USD', toScale: 5));
+        fromIsoCode: 'AUD', toIsoCode: 'USD', toDecimalDigits: 5));
 
     final t1 = platform.exchangeTo(aud, 'USD');
-    expect(t1, equals(Money.fromNum(0.75312, scale: 5, code: 'USD')));
-    expect(t1.scale, equals(5));
+    expect(
+        t1, equals(Money.fromNum(0.75312, decimalDigits: 5, isoCode: 'USD')));
+    expect(t1.decimalDigits, equals(5));
 
     /// Use the automatic inverse rate
     final t2 = platform.exchangeTo(usd, 'AUD');
-    expect(t2, equals(Money.fromNum(1, scale: 5, code: 'AUD')));
-    expect(t2.scale, equals(5));
+    expect(t2, equals(Money.fromNum(1, decimalDigits: 5, isoCode: 'AUD')));
+    expect(t2.decimalDigits, equals(5));
   });
 }

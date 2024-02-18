@@ -9,23 +9,23 @@ import 'package:test/test.dart';
 
 void main() {
   group('CommonCurrency', () {
-    test('has a code and a precision', () {
+    test('has an isoCode and a precision', () {
       // Check common currencies are registered.
       expect(Currencies().find('USD'), equals(CommonCurrencies().usd));
 
       var value = Currencies().parse(r'$USD10.50');
-      expect(value, equals(Money.fromInt(1050, code: 'USD')));
+      expect(value, equals(Money.fromInt(1050, isoCode: 'USD')));
 
       // register all common currencies.
       value = Currencies().parse(r'$NZD10.50');
-      expect(value, equals(Money.fromInt(1050, code: 'NZD')));
+      expect(value, equals(Money.fromInt(1050, isoCode: 'NZD')));
 
       //Test for newly added currency
       value = Currencies().parse('₦NGN4.50');
-      expect(value, equals(Money.fromInt(450, code: 'NGN')));
+      expect(value, equals(Money.fromInt(450, isoCode: 'NGN')));
 
       value = Currencies().parse('₵GHS4.50');
-      expect(value, equals(Money.fromInt(450, code: 'GHS')));
+      expect(value, equals(Money.fromInt(450, isoCode: 'GHS')));
     });
 
     test('Test Default Formats', () {

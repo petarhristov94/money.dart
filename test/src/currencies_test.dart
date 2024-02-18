@@ -16,7 +16,7 @@ void main() {
       Currencies().registerList([usd, eur]);
     });
 
-    test('returns a currency identified by code', () {
+    test('returns a currency identified by isoCode', () {
       expect(Currencies().find('USD'), equals(usd));
       expect(Currencies().find('EUR'), equals(eur));
     });
@@ -27,8 +27,8 @@ void main() {
 
     test('returns all currencies correctly', () {
       expect(Currencies().getRegistered(), [...CommonCurrencies().asList()]);
-      expect(Currencies().getRegistered().map((c) => c.code),
-          [...CommonCurrencies().asList().map((currency) => currency.code)]);
+      expect(Currencies().getRegistered().map((c) => c.isoCode),
+          [...CommonCurrencies().asList().map((currency) => currency.isoCode)]);
     });
 
     test('operators', () {

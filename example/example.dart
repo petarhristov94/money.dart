@@ -11,11 +11,11 @@ void main() {
   /// Create money from Fixed amount
 
   final fixed = Fixed.fromInt(100);
-  Money.parse('1.23', code: 'AUD');
+  Money.parse('1.23', isoCode: 'AUD');
 
-  Money.fromFixed(fixed, code: 'AUD');
+  Money.fromFixed(fixed, isoCode: 'AUD');
 
-  Money.fromDecimal(Decimal.parse('1.23'), code: 'EUR');
+  Money.fromDecimal(Decimal.parse('1.23'), isoCode: 'EUR');
 
   ///
   /// Create a money which stores $USD 10.00
@@ -24,7 +24,7 @@ void main() {
   ///   monetary value.
   /// So $10.00 is 1000 cents.
   ///
-  final costPrice = Money.fromInt(1000, code: 'USD');
+  final costPrice = Money.fromInt(1000, isoCode: 'USD');
 
   print(costPrice);
   // > $10.00
@@ -42,13 +42,13 @@ void main() {
   /// Create a [Money] instance from a String
   /// using [Money.parse]
   ///
-  final taxPrice = Money.parse(r'$1.50', code: 'USD');
+  final taxPrice = Money.parse(r'$1.50', isoCode: 'USD');
   print(taxPrice.format('CC 0.0 S'));
   // > US 1.50 $
 
   ///
   /// Create a [Money] instance from a String
-  /// with an embedded Currency Code
+  /// with an embedded Currency isoCode
   /// using [Currencies.parse]
   ///
   /// Create a custom currency
@@ -68,7 +68,7 @@ void main() {
   Currencies().register(Currency.create('DODGE', 5, symbol: 'Ð'));
   final dodge = Currencies().find('DODGE');
   Money.fromNumWithCurrency(0.1123, dodge!);
-  Money.fromNum(0.1123, code: 'DODGE');
+  Money.fromNum(0.1123, isoCode: 'DODGE');
 
   ///
   /// Do some maths
@@ -84,7 +84,7 @@ void main() {
   ///
   /// Do some custom formatting of the ouput
   /// S - the symbol e.g. $
-  /// CC - first two digits of the currency code provided when creating
+  /// CC - first two digits of the currency isoCode provided when creating
   ///     the currency.
   /// # - a digit if required
   /// 0 - a digit or the zero character as padding.
@@ -95,7 +95,7 @@ void main() {
   /// Explicitly define the symbol and the default pattern to be used
   ///    when calling [Money.toString()]
   ///
-  /// JPY - code for japenese yen.
+  /// JPY - isoCode for japenese yen.
   /// 0 - the number of minor units (e.g cents) used by the currency.
   ///     The yen has no minor units.
   /// ¥ - currency symbol for the yen
@@ -118,7 +118,10 @@ void main() {
   ///      -> 1.000,00
   ///
   final euro = Currency.create('EUR', 2,
-      symbol: '€', invertSeparators: true, pattern: '#.##0,00 S');
+      symbol: '€',
+      groupSeparator: '.',
+      decimalSeparator: ',',
+      pattern: '#,##0.00 S');
 
   final bmwPrice = Money.fromIntWithCurrency(10025090, euro);
   print(bmwPrice);
@@ -130,7 +133,7 @@ void main() {
   ///
 
   // 100,345.30 usd
-  final teslaPrice = Money.fromInt(10034530, code: 'USD');
+  final teslaPrice = Money.fromInt(10034530, isoCode: 'USD');
 
   print(teslaPrice.format('###,###'));
   // > 100,345
@@ -142,14 +145,14 @@ void main() {
   // > US100,345.30
 
   // 100,345.30 EUR
-  final euroCostPrice = Money.fromInt(10034530, code: 'EUR');
-  print(euroCostPrice.format('###.###'));
+  final euroCostPrice = Money.fromInt(10034530, isoCode: 'EUR');
+  print(euroCostPrice.format('###,###'));
   // > 100.345
 
-  print(euroCostPrice.format('###.###,## S'));
+  print(euroCostPrice.format('###,###.## S'));
   // > 100.345,3 €
 
-  print(euroCostPrice.format('###.###,#0 CC'));
+  print(euroCostPrice.format('###,###.#0 CC'));
   // > 100.345,30 EU
 
   ///
@@ -161,7 +164,7 @@ void main() {
   Currencies().register(jpy);
 
   // use a registered currency by finding it in the registry using
-  // the currency code that the currency was created with.
+  // the currency isoCode that the currency was created with.
   final usDollar = Currencies().find('USD');
 
   final invoicePrice = Money.fromIntWithCurrency(1000, usDollar!);
@@ -180,7 +183,7 @@ void main() {
 
   // retrieve all registered currencies
   final registeredCurrencies = Currencies().getRegistered();
-  final codes = registeredCurrencies.map((c) => c.code);
+  final codes = registeredCurrencies.map((c) => c.isoCode);
   print(codes);
   // (USD, AUD, EUR, JPY)
 }
