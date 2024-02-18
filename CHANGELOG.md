@@ -1,3 +1,6 @@
+# 5.0.0-alpha.2
+- updated the list of supported platforms.
+
 # 5.0.0-alpha.1
 The driver for this release and the breaking changes comes from:
 https://github.com/onepub-dev/money.dart/issues/79
