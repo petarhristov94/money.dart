@@ -109,3 +109,4 @@ The default pattern for BTC has been changed to:
 
  This is to make it consistent with other currencies (i.e. the number of required decimal places matches the scale);
 
+v2
