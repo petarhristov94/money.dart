@@ -70,43 +70,66 @@ expect(sellPrice.toString(), equals(r'$10.50'));
 ```
 
 
-# Upgrading from v2 to v3
-The Money2 3.0.0 release introduces a number of breaking changes in an effort to clean up the api by making it more consistent.
-The 3.0.0 release also moves to using the Fixed decimal package for storing the underlying amounts.
-This should hopefully make the Money2 package easier to use.
+# Upgrading from v4 to v5
+The Money2 5.0.0 release introduces a number of braking changes:
 
-The incorrectly used term 'precision' has been replaced with 'scale' meaning the no. of decimal places we store.
+- The 'invertSeparator' argument to the Currency class has been broken out 
+into two separate arguments 'groupSeparator' and 'decimalSeparator'. 
 
-Breaking Changes:
-
-| old api | new api | Details |
-| ----- | ----- | --- |
-| Money.from | Money.fromNum | Name change only 
-| ExchangeRate.from | ExchangeRate.fromNum | Requires a from and to Currency code.
-| Money.fromMinorUnits | Money.fromInt | Name change only
-
-When parsing Money with a pattern that includes 'C' or 'S' the passed value will still be successfully parsed even if it doesn't have a symbol or currency code. 
-
-Patterns with trialing ## were being treated the same as trailing 00
-
-e.g.
-0.## === 0.00
-
-These are now treated correctly.
-
-The following now works correctly.
-
-Example 1
+If you have been using 'invertSeparator: true' then you need to replace this with
 ```dart
-  final Currency t2 =
-          Currency.create('BTC', 8, symbol: '₿', pattern: 'S0.########');
-
-   expect(Money.parseWithCurrency('1', t2).toString(), equals('₿1'));
+  groupSeparator: '.',
+  decimalSeparator: ',',
 ```
+- patterns used for parsing and formatting must always use ',' for group separators
+and '.' for decimal separators **regardless** of what has been used for the
+groupSeparator and decimalSeparator. This allows a single pattern to be used across currencies rather than having
+to create a unique pattern for each currency when looking to use custom formats.
 
-The default pattern for BTC has been changed to:
- 'S0.00000000'
+So if you have been using 'invertSeparator: true' then you will 
+need to modifiy any custom patterns from '#.###,##' to '#,###.##'.
 
- This is to make it consistent with other currencies (i.e. the number of required decimal places matches the scale);
+Note the change in the separators!
 
-v2
+
+- For methods that take a 'code' it has been renamed 'isoCode' to make the
+correct use of the code more apparent.
+
+- renamed PatterDecoder.isCode to isIsoCode
+- renamed CurrencyCode to CurrencyIsoCode
+- renamed all occurances of 'scale' to 'decimalDigits' as many people
+  are not familiar with the concept of scale.
+- changed toScale on ExchangeRate members to be 'toDecimalDigits'.
+
+
+
+Here is how we used separators in the old v4 code:
+
+```dart
+  final euro = Currency.create('EUR', 2,
+      symbol: '€',
+      invertSeparators: true,
+      pattern: '#.##0,00 S');
+
+  final bmwPrice = Money.fromIntWithCurrency(10025090, euro);
+  print(bmwPrice);
+  // > 100.250,90 €
+  ```
+
+  In v5 you need to change this to:
+
+  ```dart
+    final euro = Currency.create('EUR', 2,
+      symbol: '€',
+      groupSeparator: '.',
+      decimalSeparator: ',',
+      pattern: '#,##0.00 S');
+
+  final bmwPrice = Money.fromIntWithCurrency(10025090, euro);
+  print(bmwPrice);
+  // > 100.250,90 €
+  ```
+
+  Note: the `pattern` format has changed.
+
+  
