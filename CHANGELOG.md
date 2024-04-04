@@ -1,3 +1,51 @@
+# 5.0.1
+
+# 5.0.0
+The driver for this release and the breaking changes comes from:
+https://github.com/onepub-dev/money.dart/issues/79
+
+The aim is to allow users to fully customise the group and decimal separators.
+We have also renamed 'scale' to 'decimalDigits' as this term is likely to be
+more familiar to users.
+
+## breaking changes
+- The 'invertSeparator' argument to the Currency class has been broken out 
+into two separate arguments 'groupSeparator' and 'decimalSeparator'. 
+If you are using 'invertSeparator: true' then you need to replace this with
+```dart
+  groupSeparator: '.',
+  decimalSeparator: ',',
+```
+- patterns used for parsing and formatting must always use ',' for group separators
+and '.' for decimal separators regardless of what has been used for the
+groupSeparator and decimalSeparator.
+This allows a single pattern to be used across currencies rather than having
+to create a unique pattern for each currency when looking to use custom formats.
+
+This means that if you have been using 'invertSeparator: true' then you will 
+need to modifiy any custom patterns from '#.###,##' to '#,###.##'.
+Note the change in the separators!
+
+
+- For methods that take a 'code' it has been renamed 'isoCode' to make the
+correct use of the code more apparent.
+
+- renamed PatterDecoder.isCode to isIsoCode
+- renamed CurrencyCode to CurrencyIsoCode
+- renamed all occurances of 'scale' to 'decimalDigits' as many people
+  are not familiar with the concept of scale.
+- changed toScale on ExchangeRate members to be 'toDecimalDigits'.
+
+## non-breaking changes
+- Fixed doco for Currencies class as it is a singleton and it's needs methods need to be called  via Currencies()...
+
+## Full set of currency codes
+Thanks to the work of [fueripe-desu](https://github.com/fueripe-desu) we now have a full set of currency codes
+and associated formatting built into common-currencies.
+An heroic piece of work - so much thanks to fueripe-desu from myself and the wider Dart
+community.
+
+
 # 5.0.0-alpha.2
 - updated the list of supported platforms.
 
