@@ -23,18 +23,6 @@ class CommonCurrencies {
 
   static final CommonCurrencies _self = CommonCurrencies._internal();
 
-  /// Colombian Peso
-  final Currency cop = Currency.create(
-    'COP',
-    2,
-    pattern: '0,00S',
-    groupSeparator: '.',
-    decimalSeparator: ',',
-    country: 'Colombia',
-    unit: 'Peso',
-    name: 'Colombian Peso',
-  );
-
   /// Afghan Afghani
   final Currency afn = Currency.create(
     'AFN',
@@ -79,15 +67,6 @@ class CommonCurrencies {
     name: 'Angolan Kwanza',
   );
 
-  /// East Caribbean Dollar
-  final Currency xcd = Currency.create(
-    'XCD',
-    2,
-    country: 'East Caribbean',
-    unit: 'Dollar',
-    name: 'East Caribbean Dollar',
-  );
-
   /// Argentine Peso
   final Currency ars = Currency.create(
     'ARS',
@@ -124,15 +103,9 @@ class CommonCurrencies {
     name: 'Aruban Florin',
   );
 
-  /// Saint Helena Pound
-  final Currency shp = Currency.create(
-    'SHP',
-    2,
-    symbol: '£',
-    country: 'Saint Helena',
-    unit: 'Pound',
-    name: 'Saint Helena Pound',
-  );
+  /// Australian Dollar
+  final Currency aud = Currency.create('AUD', 2,
+      country: 'Australian', unit: 'Dollar', name: 'Australian Dollar');
 
   /// Azerbaijani Manat
   final Currency azn = Currency.create(
@@ -206,19 +179,6 @@ class CommonCurrencies {
     name: 'Belize Dollar',
   );
 
-  /// West African CFA Franc
-  final Currency xof = Currency.create(
-    'XOF',
-    0,
-    symbol: 'CFA',
-    pattern: 'S0',
-    groupSeparator: ' ',
-    decimalSeparator: '',
-    country: 'West African States',
-    unit: 'Franc',
-    name: 'West African CFA Franc',
-  );
-
   /// Bermudian Dollar
   final Currency bmd = Currency.create(
     'BMD',
@@ -237,6 +197,14 @@ class CommonCurrencies {
     unit: 'Ngultrum',
     name: 'Bhutanese Ngultrum',
   );
+
+  /// Bitcoin
+  final Currency btc = Currency.create('BTC', 8,
+      symbol: '₿',
+      pattern: 'S0.00000000',
+      country: 'Digital',
+      unit: 'Bitcoin',
+      name: 'Bitcon');
 
   /// Bolivian Boliviano
   final Currency bob = Currency.create(
@@ -271,6 +239,22 @@ class CommonCurrencies {
     name: 'Botswana Pula',
   );
 
+  /// Brazilian Real
+  final Currency brl = Currency.create('BRL', 2,
+      symbol: r'R$',
+      groupSeparator: '.',
+      decimalSeparator: ',',
+      country: 'Brazil',
+      unit: 'Real',
+      name: 'Brazilian Real');
+
+  /// British Pound Sterling
+  final Currency gbp = Currency.create('GBP', 2,
+      symbol: '£',
+      country: 'Britan',
+      unit: 'Pound Sterling',
+      name: 'British Pound Sterling');
+
   /// Brunei Dollar
   final Currency bnd = Currency.create(
     'BND',
@@ -278,15 +262,6 @@ class CommonCurrencies {
     country: 'Brunei',
     unit: 'Dollar',
     name: 'Brunei Dollar',
-  );
-
-  /// Singapore Dollar
-  final Currency sgd = Currency.create(
-    'SGD',
-    2,
-    country: 'Singapore',
-    unit: 'Dollar',
-    name: 'Singapore Dollar',
   );
 
   /// Bulgarian Lev
@@ -324,18 +299,9 @@ class CommonCurrencies {
     name: 'Cambodian Riel',
   );
 
-  /// Central African CFA Franc
-  final Currency xaf = Currency.create(
-    'XAF',
-    0,
-    symbol: 'FCFA',
-    pattern: 'S0',
-    groupSeparator: ' ',
-    decimalSeparator: '',
-    country: 'Central African States',
-    unit: 'Franc',
-    name: 'Central African CFA Franc',
-  );
+  /// Canadian Dollar
+  final Currency cad = Currency.create('CAD', 2,
+      country: 'Canada', unit: 'Dollar', name: 'Canadian Dollar');
 
   /// Cape Verdean Escudo
   final Currency cve = Currency.create(
@@ -355,6 +321,31 @@ class CommonCurrencies {
     name: 'Cayman Islands Dollar',
   );
 
+  /// Central African CFA Franc
+  final Currency xaf = Currency.create(
+    'XAF',
+    0,
+    symbol: 'FCFA',
+    pattern: 'S0',
+    groupSeparator: ' ',
+    decimalSeparator: '',
+    country: 'Central African States',
+    unit: 'Franc',
+    name: 'Central African CFA Franc',
+  );
+
+  /// CFP Franc
+  final Currency xpf = Currency.create(
+    'XPF',
+    0,
+    symbol: '₣',
+    pattern: 'S0',
+    decimalSeparator: '',
+    country: 'French Polynesia, New Caledonia, Wallis and Futuna',
+    unit: 'Franc',
+    name: 'CFP Franc',
+  );
+
   /// Chilean Peso
   final Currency clp = Currency.create(
     'CLP',
@@ -364,6 +355,25 @@ class CommonCurrencies {
     country: 'Chile',
     unit: 'Peso',
     name: 'Chilean Peso',
+  );
+
+  /// Chinese Renminbi
+  final Currency cny = Currency.create('CNY', 2,
+      symbol: '¥',
+      country: 'China',
+      unit: 'Renminbi',
+      name: 'Chinese Renminbi');
+
+  /// Colombian Peso
+  final Currency cop = Currency.create(
+    'COP',
+    2,
+    pattern: '0,00S',
+    groupSeparator: '.',
+    decimalSeparator: ',',
+    country: 'Colombia',
+    unit: 'Peso',
+    name: 'Colombian Peso',
   );
 
   /// Comorian Franc
@@ -410,15 +420,15 @@ class CommonCurrencies {
     name: 'Cuban Peso',
   );
 
-  /// Netherlands Antillean Guilder
-  final Currency ang = Currency.create(
-    'ANG',
-    2,
-    symbol: 'ƒ',
-    country: 'Curaçao and Sint Maarten',
-    unit: 'Guilder',
-    name: 'Netherlands Antillean Guilder',
-  );
+  /// Czech Koruna
+  final Currency czk = Currency.create('CZK', 2,
+      symbol: 'Kč',
+      groupSeparator: '.',
+      decimalSeparator: ',',
+      pattern: '0.00S',
+      country: 'Czech',
+      unit: 'Koruna',
+      name: 'Czech Koruna');
 
   /// Danish Krone
   final Currency dkk = Currency.create(
@@ -454,6 +464,15 @@ class CommonCurrencies {
     name: 'Dominican Peso',
   );
 
+  /// East Caribbean Dollar
+  final Currency xcd = Currency.create(
+    'XCD',
+    2,
+    country: 'East Caribbean',
+    unit: 'Dollar',
+    name: 'East Caribbean Dollar',
+  );
+
   /// Egyptian Pound
   final Currency egp = Currency.create(
     'EGP',
@@ -474,16 +493,6 @@ class CommonCurrencies {
     name: 'Eritrean Nakfa',
   );
 
-  /// Swazi Lilangeni
-  final Currency szl = Currency.create(
-    'SZL',
-    2,
-    symbol: 'E',
-    country: 'Eswatini',
-    unit: 'Lilangeni',
-    name: 'Swazi Lilangeni',
-  );
-
   /// Ethiopian Birr
   final Currency etb = Currency.create(
     'ETB',
@@ -493,6 +502,16 @@ class CommonCurrencies {
     unit: 'Birr',
     name: 'Ethiopian Birr',
   );
+
+  /// European Union Euro
+  final Currency euro = Currency.create('EUR', 2,
+      symbol: '€',
+      groupSeparator: '.',
+      decimalSeparator: ',',
+      pattern: '0.00S',
+      country: 'European Union',
+      unit: 'Euro',
+      name: 'European Union Euro');
 
   /// Falkland Islands Pound
   final Currency fkp = Currency.create(
@@ -511,18 +530,6 @@ class CommonCurrencies {
     country: 'Fiji',
     unit: 'Dollar',
     name: 'Fijian Dollar',
-  );
-
-  /// CFP Franc
-  final Currency xpf = Currency.create(
-    'XPF',
-    0,
-    symbol: '₣',
-    pattern: 'S0',
-    decimalSeparator: '',
-    country: 'French Polynesia, New Caledonia, Wallis and Futuna',
-    unit: 'Franc',
-    name: 'CFP Franc',
   );
 
   /// Gambian Dalasi
@@ -547,6 +554,10 @@ class CommonCurrencies {
     unit: 'Lari',
     name: 'Georgian Lari',
   );
+
+  /// Ghana Cedi
+  final Currency ghs = Currency.create('GHS', 2,
+      symbol: '₵', country: 'Ghana', unit: 'Cedi', name: 'Ghana Cedi');
 
   /// Gibraltar Pound
   final Currency gip = Currency.create(
@@ -642,6 +653,10 @@ class CommonCurrencies {
     name: 'Icelandic Krona',
   );
 
+  /// Indian Rupee
+  final Currency inr = Currency.create('INR', 2,
+      symbol: '₹', country: 'Indian', unit: 'Rupee', name: 'Indian Rupee');
+
   /// Indonesian Rupiah
   final Currency idr = Currency.create(
     'IDR',
@@ -693,6 +708,14 @@ class CommonCurrencies {
     name: 'Jamaican Dollar',
   );
 
+  /// Japanese Yen
+  final Currency jpy = Currency.create('JPY', 0,
+      symbol: '¥',
+      pattern: 'S0',
+      country: 'Japanese',
+      unit: 'Yen',
+      name: 'Japanese Yen');
+
   /// Jordanian Dinar
   final Currency jod = Currency.create(
     'JOD',
@@ -722,16 +745,6 @@ class CommonCurrencies {
     country: 'Kenya',
     unit: 'Shilling',
     name: 'Kenyan Shilling',
-  );
-
-  /// North Korean Won
-  final Currency kpw = Currency.create(
-    'KPW',
-    2,
-    symbol: '₩',
-    country: 'North Korea',
-    unit: 'Won',
-    name: 'North Korean Won',
   );
 
   /// Kuwaiti Dinar
@@ -815,6 +828,19 @@ class CommonCurrencies {
     name: 'Macanese Pataca',
   );
 
+  /// Macedonian Denar
+  final Currency mkd = Currency.create(
+    'MKD',
+    2,
+    symbol: 'ден',
+    pattern: 'S0,00',
+    groupSeparator: '.',
+    decimalSeparator: ',',
+    country: 'North Macedonia',
+    unit: 'Denar',
+    name: 'Macedonian Denar',
+  );
+
   /// Malagasy Ariary
   final Currency mga = Currency.create(
     'MGA',
@@ -874,6 +900,10 @@ class CommonCurrencies {
     unit: 'Rupee',
     name: 'Mauritian Rupee',
   );
+
+  /// Mexican Peso
+  final Currency mxn = Currency.create('MXN', 2,
+      country: 'Mexican', unit: 'Peso', name: 'Mexican Peso');
 
   /// Moldovan Leu
   final Currency mdl = Currency.create(
@@ -947,6 +977,28 @@ class CommonCurrencies {
     name: 'Nepalese Rupee',
   );
 
+  /// Netherlands Antillean Guilder
+  final Currency ang = Currency.create(
+    'ANG',
+    2,
+    symbol: 'ƒ',
+    country: 'Curaçao and Sint Maarten',
+    unit: 'Guilder',
+    name: 'Netherlands Antillean Guilder',
+  );
+
+  /// New Taiwan Dollar
+  final Currency twd = Currency.create('TWD', 0,
+      symbol: r'NT$',
+      pattern: 'S0',
+      country: 'New Taiwan',
+      unit: 'Dollar',
+      name: 'New Taiwan Dollar');
+
+  /// New Zealand Dollar
+  final Currency nzd = Currency.create('NZD', 2,
+      country: 'New Zealand', unit: 'Dollar', name: 'New Zealand Dollar');
+
   /// Nicaraguan Córdoba
   final Currency nio = Currency.create(
     'NIO',
@@ -957,31 +1009,26 @@ class CommonCurrencies {
     name: 'Nicaraguan Córdoba',
   );
 
-  /// Macedonian Denar
-  final Currency mkd = Currency.create(
-    'MKD',
+  /// Nigerian Naira
+  final Currency ngn = Currency.create('NGN', 2,
+      symbol: '₦', country: 'Nigerian', unit: 'Naira', name: 'Nigerian Naira');
+
+  /// North Korean Won
+  final Currency kpw = Currency.create(
+    'KPW',
     2,
-    symbol: 'ден',
-    pattern: 'S0,00',
-    groupSeparator: '.',
-    decimalSeparator: ',',
-    country: 'North Macedonia',
-    unit: 'Denar',
-    name: 'Macedonian Denar',
+    symbol: '₩',
+    country: 'North Korea',
+    unit: 'Won',
+    name: 'North Korean Won',
   );
 
-  /// Turkish Lira
-  final Currency try_ = Currency.create(
-    'TRY',
-    2,
-    symbol: '₺',
-    pattern: 'S0,00',
-    groupSeparator: '.',
-    decimalSeparator: ',',
-    country: 'Turkey',
-    unit: 'Lira',
-    name: 'Turkish Lira',
-  );
+  /// Norwegian Krone
+  final Currency nok = Currency.create('NOK', 2,
+      symbol: 'kr',
+      country: 'Norwegian',
+      unit: 'Krone',
+      name: 'Norwegian Krone');
 
   /// Omani Rial
   final Currency omr = Currency.create(
@@ -1057,6 +1104,16 @@ class CommonCurrencies {
     name: 'Philippine Peso',
   );
 
+  /// Polish Zloty
+  final Currency pln = Currency.create('PLN', 2,
+      symbol: 'zł',
+      groupSeparator: '.',
+      decimalSeparator: ',',
+      pattern: '0.00S',
+      country: 'Polish',
+      unit: 'Zloty',
+      name: 'Polish Zloty');
+
   /// Qatari Riyal
   final Currency qar = Currency.create(
     'QAR',
@@ -1080,6 +1137,10 @@ class CommonCurrencies {
     name: 'Romanian Leu',
   );
 
+  /// Russian Ruble
+  final Currency rub = Currency.create('RUB', 2,
+      symbol: '₽', country: 'Russia', unit: 'Ruble', name: 'Russian Ruble');
+
   /// Rwandan Franc
   final Currency rwf = Currency.create(
     'RWF',
@@ -1090,6 +1151,16 @@ class CommonCurrencies {
     country: 'Rwanda',
     unit: 'Franc',
     name: 'Rwandan Franc',
+  );
+
+  /// Saint Helena Pound
+  final Currency shp = Currency.create(
+    'SHP',
+    2,
+    symbol: '£',
+    country: 'Saint Helena',
+    unit: 'Pound',
+    name: 'Saint Helena Pound',
   );
 
   /// Samoan Tala
@@ -1155,6 +1226,15 @@ class CommonCurrencies {
     name: 'Sierra Leonean Leone',
   );
 
+  /// Singapore Dollar
+  final Currency sgd = Currency.create(
+    'SGD',
+    2,
+    country: 'Singapore',
+    unit: 'Dollar',
+    name: 'Singapore Dollar',
+  );
+
   /// Solomon Islands Dollar
   final Currency sbd = Currency.create(
     'SBD',
@@ -1173,6 +1253,21 @@ class CommonCurrencies {
     unit: 'Shilling',
     name: 'Somali Shilling',
   );
+
+  /// South African Rand
+  final Currency zar = Currency.create('ZAR', 2,
+      symbol: 'R',
+      country: 'South African',
+      unit: 'Rand',
+      name: 'South African Rand');
+
+  /// South Korean Won
+  final Currency krw = Currency.create('KRW', 0,
+      symbol: '₩',
+      pattern: 'S0',
+      country: 'South Korean',
+      unit: 'Won',
+      name: 'South Korean Won');
 
   /// South Sudanese Pound
   final Currency ssp = Currency.create(
@@ -1213,6 +1308,16 @@ class CommonCurrencies {
     name: 'Surinamese Dollar',
   );
 
+  /// Swazi Lilangeni
+  final Currency szl = Currency.create(
+    'SZL',
+    2,
+    symbol: 'E',
+    country: 'Eswatini',
+    unit: 'Lilangeni',
+    name: 'Swazi Lilangeni',
+  );
+
   /// Swedish Krona
   final Currency sek = Currency.create(
     'SEK',
@@ -1225,6 +1330,10 @@ class CommonCurrencies {
     unit: 'Krona',
     name: 'Swedish Krona',
   );
+
+  /// Swiss Franc
+  final Currency chf = Currency.create('CHF', 2,
+      symbol: 'fr', country: 'Switzerland', unit: 'Franc', name: 'Swiss Franc');
 
   /// Syrian Pound
   final Currency syp = Currency.create(
@@ -1297,6 +1406,10 @@ class CommonCurrencies {
     name: 'Tunisian Dinar',
   );
 
+  /// Turkish Lira
+  final Currency ltry = Currency.create('TRY', 2,
+      symbol: '₺', country: 'Turkish', unit: 'Lira', name: 'Turkish Lira');
+
   /// Turkmenistani Manat
   final Currency tmt = Currency.create(
     'TMT',
@@ -1338,6 +1451,12 @@ class CommonCurrencies {
     unit: 'Dirham',
     name: 'United Arab Emirates Dirham',
   );
+
+  /// United States Dollar
+  final Currency usd = Currency.create('USD', 2,
+      country: 'United States of America',
+      unit: 'Dollar',
+      name: 'United States Dollar');
 
   /// Uruguayan Peso
   final Currency uyu = Currency.create(
@@ -1396,6 +1515,19 @@ class CommonCurrencies {
     name: 'Vietnamese Dong',
   );
 
+  /// West African CFA Franc
+  final Currency xof = Currency.create(
+    'XOF',
+    0,
+    symbol: 'CFA',
+    pattern: 'S0',
+    groupSeparator: ' ',
+    decimalSeparator: '',
+    country: 'West African States',
+    unit: 'Franc',
+    name: 'West African CFA Franc',
+  );
+
   /// Yemeni Rial
   final Currency yer = Currency.create(
     'YER',
@@ -1416,175 +1548,160 @@ class CommonCurrencies {
     name: 'Zambian Kwacha',
   );
 
-  /// Australian Dollar
-  final Currency aud = Currency.create('AUD', 2,
-      country: 'Australian', unit: 'Dollar', name: 'Australian Dollar');
-
-  /// Bitcoin
-  final Currency btc = Currency.create('BTC', 8,
-      symbol: '₿',
-      pattern: 'S0.00000000',
-      country: 'Digital',
-      unit: 'Bitcoin',
-      name: 'Bitcon');
-
-  /// Brazilian Real
-  final Currency brl = Currency.create('BRL', 2,
-      symbol: r'R$',
-      groupSeparator: '.',
-      decimalSeparator: ',',
-      country: 'Brazil',
-      unit: 'Real',
-      name: 'Brazilian Real');
-
-  /// British Pound Sterling
-  final Currency gbp = Currency.create('GBP', 2,
-      symbol: '£',
-      country: 'Britan',
-      unit: 'Pound Sterling',
-      name: 'British Pound Sterling');
-
-  /// Canadian Dollar
-  final Currency cad = Currency.create('CAD', 2,
-      country: 'Canada', unit: 'Dollar', name: 'Canadian Dollar');
-
-  /// Chinese Renminbi
-  final Currency cny = Currency.create('CNY', 2,
-      symbol: '¥',
-      country: 'China',
-      unit: 'Renminbi',
-      name: 'Chinese Renminbi');
-
-  /// Czech Koruna
-  final Currency czk = Currency.create('CZK', 2,
-      symbol: 'Kč',
-      groupSeparator: '.',
-      decimalSeparator: ',',
-      pattern: '0.00S',
-      country: 'Czech',
-      unit: 'Koruna',
-      name: 'Czech Koruna');
-
-  /// European Union Euro
-  final Currency euro = Currency.create('EUR', 2,
-      symbol: '€',
-      groupSeparator: '.',
-      decimalSeparator: ',',
-      pattern: '0.00S',
-      country: 'European Union',
-      unit: 'Euro',
-      name: 'European Union Euro');
-
-  /// Ghana Cedi
-  final Currency ghs = Currency.create('GHS', 2,
-      symbol: '₵', country: 'Ghana', unit: 'Cedi', name: 'Ghana Cedi');
-
-  /// Indian Rupee
-  final Currency inr = Currency.create('INR', 2,
-      symbol: '₹', country: 'Indian', unit: 'Rupee', name: 'Indian Rupee');
-
-  /// Japanese Yen
-  final Currency jpy = Currency.create('JPY', 0,
-      symbol: '¥',
-      pattern: 'S0',
-      country: 'Japanese',
-      unit: 'Yen',
-      name: 'Japanese Yen');
-
-  /// Mexican Peso
-  final Currency mxn = Currency.create('MXN', 2,
-      country: 'Mexican', unit: 'Peso', name: 'Mexican Peso');
-
-  /// New Zealand Dollar
-  final Currency nzd = Currency.create('NZD', 2,
-      country: 'New Zealand', unit: 'Dollar', name: 'New Zealand Dollar');
-
-  /// Nigerian Naira
-  final Currency ngn = Currency.create('NGN', 2,
-      symbol: '₦', country: 'Nigerian', unit: 'Naira', name: 'Nigerian Naira');
-
-  /// Norwegian Krone
-  final Currency nok = Currency.create('NOK', 2,
-      symbol: 'kr',
-      country: 'Norwegian',
-      unit: 'Krone',
-      name: 'Norwegian Krone');
-
-  /// Polish Zloty
-  final Currency pln = Currency.create('PLN', 2,
-      symbol: 'zł',
-      groupSeparator: '.',
-      decimalSeparator: ',',
-      pattern: '0.00S',
-      country: 'Polish',
-      unit: 'Zloty',
-      name: 'Polish Zloty');
-
-  /// South African Rand
-  final Currency zar = Currency.create('ZAR', 2,
-      symbol: 'R',
-      country: 'South African',
-      unit: 'Rand',
-      name: 'South African Rand');
-
-  /// South Korean Won
-  final Currency krw = Currency.create('KRW', 0,
-      symbol: '₩',
-      pattern: 'S0',
-      country: 'South Korean',
-      unit: 'Won',
-      name: 'South Korean Won');
-
-  /// Swiss Franc
-  final Currency chf = Currency.create('CHF', 2,
-      symbol: 'fr', country: 'Switzerland', unit: 'Franc', name: 'Swiss Franc');
-
-  /// New Taiwan Dollar
-  final Currency twd = Currency.create('TWD', 0,
-      symbol: r'NT$',
-      pattern: 'S0',
-      country: 'New Taiwan',
-      unit: 'Dollar',
-      name: 'New Taiwan Dollar');
-
-  /// Turkish Lira
-  final Currency ltry = Currency.create('TRY', 2,
-      symbol: '₺', country: 'Turkish', unit: 'Lira', name: 'Turkish Lira');
-
-  /// Russian Ruble
-  final Currency rub = Currency.create('RUB', 2,
-      symbol: '₽', country: 'Russia', unit: 'Ruble', name: 'Russian Ruble');
-
-  /// United States Dollar
-  final Currency usd = Currency.create('USD', 2,
-      country: 'United States of America',
-      unit: 'Dollar',
-      name: 'United States Dollar');
-
   /// Return list of all of the common currency.
   List<Currency> asList() => [
+        aed,
+        afn,
+        all,
+        amd,
+        ang,
+        aoa,
+        ars,
         aud,
+        awg,
+        azn,
+        bam,
+        bbd,
+        bdt,
+        bgn,
+        bhd,
+        bif,
+        bmd,
+        bnd,
+        bob,
         brl,
+        bsd,
         btc,
+        btn,
+        bwp,
+        byn,
+        bzd,
         cad,
+        cdf,
         chf,
+        clp,
         cny,
+        cop,
+        crc,
+        cup,
+        cve,
         czk,
+        djf,
+        dkk,
+        dop,
+        dzd,
+        egp,
+        ern,
+        etb,
         euro,
+        fjd,
+        fkp,
         gbp,
+        gel,
         ghs,
+        gip,
+        gmd,
+        gnf,
+        gtq,
+        gyd,
+        hnl,
+        htg,
+        huf,
+        idr,
+        ils,
         inr,
+        iqd,
+        irr,
+        isk,
+        jmd,
+        jod,
         jpy,
+        kes,
+        kgs,
+        khr,
+        kmf,
+        kpw,
         krw,
+        kwd,
+        kyd,
+        kzt,
+        lak,
+        lbp,
+        lkr,
+        lrd,
+        lsl,
         ltry,
+        lyd,
+        mad,
+        mdl,
+        mga,
+        mkd,
+        mmk,
+        mnt,
+        mop,
+        mru,
+        mur,
+        mvr,
+        mwk,
         mxn,
+        myr,
+        mzn,
+        nad,
         ngn,
+        nio,
         nok,
+        npr,
         nzd,
+        omr,
+        pab,
+        pen,
+        pgk,
+        php,
+        pkr,
         pln,
+        pyg,
+        qar,
+        ron,
+        rsd,
         rub,
+        rwf,
+        sar,
+        sbd,
+        scr,
+        sdg,
+        sek,
+        sgd,
+        shp,
+        sle,
+        sos,
+        srd,
+        ssp,
+        stn,
+        syp,
+        szl,
+        thb,
+        tjs,
+        tmt,
+        tnd,
+        top,
+        ttd,
         twd,
+        tzs,
+        uah,
+        ugx,
         usd,
+        uyu,
+        uzs,
+        ves,
+        vnd,
+        vuv,
+        wst,
+        xaf,
+        xcd,
+        xof,
+        xpf,
+        yer,
         zar,
+        zmw,
       ];
 }
