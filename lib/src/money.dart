@@ -584,6 +584,20 @@ class Money implements Comparable<Money> {
     return amount >= other.amount;
   }
 
+  /// returns the value of the Money as a double.
+  /// Becareful as you loose precision using a double
+  /// You should store money as a integer and a scale.
+  double toDouble() => amount.toDecimal().toDouble();
+
+  /// The value of the money as a [Decimal].
+  Decimal toDecimal() => amount.toDecimal();
+
+  /// The value of the money as a [Fixed].
+  Fixed toFixed() => amount;
+
+  /// the integer (major part) of the money value as an [int].
+  int toInt() => amount.integerPart.toInt();
+
   /* Allocation ***************************************************************/
 
   /// Returns allocation of this money according to `ratios`.
