@@ -1,3 +1,6 @@
+# 5.2.1
+- added copyWith ctor for money.
+
 # 5.2.0
 - added a test to check for inequality when the 'other' type is not a money now that we accept an Object? for other.
 - Merge pull request #86 from karelklic/operator==  which now takes an Object? for other so that we work with
