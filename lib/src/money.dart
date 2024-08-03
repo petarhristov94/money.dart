@@ -53,9 +53,17 @@ import 'pattern_encoder.dart';
 // @sealed
 @immutable
 class Money implements Comparable<Money> {
-  /* Internal constructor *****************************************************/
-  const Money._from(this.amount, this.currency);
-  /* Instantiation ************************************************************/
+  // factory Money.copyWith({
+  //   BigInt? amount,
+  //   Currency? currency,
+  //   String? pattern,
+  //   String? format,
+  // }) {
+  //   return Money._from(
+  //       Fixed.copyWith(data.amount,
+  //           scale: decimalDigits ?? currency.decimalDigits),
+  //       currency);
+  // }
 
   /// ******************************************
   /// Money.from
@@ -347,6 +355,29 @@ class Money implements Comparable<Money> {
     } catch (e) {
       throw MoneyParseException(e.toString());
     }
+  }
+  /* Internal constructor *****************************************************/
+  const Money._from(this.amount, this.currency);
+  /* Instantiation ************************************************************/
+
+  /// Creates a copy of this [Money] object with optional new values
+  /// for [amount], [currency] and [decimalDigits].
+  /// Changing the [currency] does NOT do an exchange calculation the
+  /// [amount] is copied across verbatium (e.g. $1.00 AUD > $1.00 USD).
+  /// If you pass an [isoCode] and it is invalid then a
+  /// [UnknownCurrencyException] is thrown.
+  Money copyWith({Fixed? amount, String? isoCode, int? decimalDigits}) {
+    Currency? currency = this.currency;
+    if (isoCode != null) {
+      currency = Currencies().find(isoCode);
+      if (currency == null) {
+        throw UnknownCurrencyException(isoCode);
+      }
+    }
+    return Money._from(
+        Fixed.copyWith(amount ?? this.amount,
+            scale: decimalDigits ?? this.amount.scale),
+        currency);
   }
 
   /// The monetary amount

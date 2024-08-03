@@ -94,6 +94,35 @@ void main() {
 
       moneyAmountPredicates(zeroCents, oneCent, minusOneCent);
     }); //
+
+    group('copyWith', () {
+      final usd = Money.fromInt(101, isoCode: 'USD', decimalDigits: 2);
+
+      test('currency', () {
+        final one = usd.copyWith(isoCode: 'EUR');
+        expect(one.integerPart, equals(BigInt.one));
+        expect(one.decimalPart, equals(BigInt.one));
+        expect(one.currency.isoCode, equals('EUR'));
+        expect(one.minorUnits, equals(BigInt.from(101)));
+        expect(one.decimalDigits, equals(2));
+      });
+
+      test('amount', () {
+        final one = usd.copyWith(amount: Fixed.ten);
+        expect(one.integerPart, equals(BigInt.from(10)));
+        expect(one.currency.isoCode, equals('USD'));
+        expect(one.minorUnits, equals(BigInt.from(1000)));
+        expect(one.decimalDigits, equals(2));
+      });
+
+      test('decimalDigits', () {
+        final one = usd.copyWith(decimalDigits: 4);
+        expect(one.integerPart, equals(BigInt.from(1)));
+        expect(one.currency.isoCode, equals('USD'));
+        expect(one.minorUnits, equals(BigInt.from(10100)));
+        expect(one.decimalDigits, equals(4));
+      });
+    });
     group('comparison', () {
       final fourDollars = Money.fromInt(400, isoCode: 'USD');
       final fiveDollars = Money.fromInt(500, isoCode: 'USD');
