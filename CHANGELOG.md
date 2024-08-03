@@ -1,3 +1,9 @@
+# 5.2.0
+- added a test to check for inequality when the 'other' type is not a money now that we accept an Object? for other.
+- Merge pull request #86 from karelklic/operator==  which now takes an Object? for other so that we work with
+the likes of the freezed package.
+
+
 # 5.1.0
 - Added additional conversion operations. Upgraded to Fixed 5.0.
 - released 5.0.1
