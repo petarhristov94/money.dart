@@ -1,3 +1,8 @@
+# 5.3.0
+- Merge pull request #88 from bryanoltman/bo/fix-typo
+- fix typo in README.md
+- upgraded to decmial 3.x
+
 # 5.2.1
 - added copyWith ctor for money.
 
