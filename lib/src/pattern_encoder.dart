@@ -100,16 +100,12 @@ class PatternEncoder implements MoneyEncoder<String> {
       switch (char) {
         case 'S':
           formatted += data.currency.symbol;
-          break;
         case 'C':
           formatted += isoCode;
-          break;
         case '#':
           formatted += formattedMajorUnits;
-          break;
         case ' ':
           formatted += ' ';
-          break;
         case '0':
         case ',':
         case '.':
@@ -168,40 +164,33 @@ class PatternEncoder implements MoneyEncoder<String> {
       switch (char) {
         case 'S':
           inMoney = false;
-          break;
         case 'C':
           inMoney = false;
-          break;
         case '#':
           inMoney = true;
           foundMoney = true;
 
           _isMoneyAllowed(inMoney: inMoney, foundMoney: foundMoney, pos: i);
           moneyPattern += '#';
-          break;
         case '0':
           _isMoneyAllowed(inMoney: inMoney, foundMoney: foundMoney, pos: i);
           moneyPattern += '0';
           inMoney = true;
           foundMoney = true;
-          break;
         case ',':
           _isMoneyAllowed(inMoney: inMoney, foundMoney: foundMoney, pos: i);
           moneyPattern += ',';
           inMoney = true;
           foundMoney = true;
 
-          break;
         case '.':
           _isMoneyAllowed(inMoney: inMoney, foundMoney: foundMoney, pos: i);
           moneyPattern += '.';
           inMoney = true;
           foundMoney = true;
 
-          break;
         case ' ':
           inMoney = false;
-          break;
         default:
           throw IllegalPatternException(
               "The pattern contains an unknown character: '$char'");
@@ -309,16 +298,12 @@ class PatternEncoder implements MoneyEncoder<String> {
       switch (char) {
         case 'S':
           formatted += data.currency.symbol;
-          break;
         case 'C':
           formatted += isoCode;
-          break;
         case '#':
           formatted += formattedMinorUnits;
-          break;
         case ' ':
           formatted += ' ';
-          break;
         case '0':
         case ',':
         case '.':

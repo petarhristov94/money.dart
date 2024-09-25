@@ -68,7 +68,6 @@ class PatternDecoder implements MoneyDecoder<String> {
             }
           }
 
-          break;
         case 'C':
           if (codeIndex >= isoCode.length) {
             throw MoneyParseException(
@@ -90,7 +89,6 @@ class PatternDecoder implements MoneyDecoder<String> {
             valueQueue.takeOne();
             codeIndex++;
           }
-          break;
         case '#':
           if (!seenMajor) {
             final char = valueQueue.peek();
@@ -108,7 +106,6 @@ class PatternDecoder implements MoneyDecoder<String> {
           } else {
             majorUnits = valueQueue.takeMajorDigits();
           }
-          break;
         case '.':
 
           /// we can have a pattern with a decimal but the
@@ -128,7 +125,6 @@ class PatternDecoder implements MoneyDecoder<String> {
             seenDecimal = true;
           }
           seenMajor = true;
-          break;
         case ' ':
           break;
         default:
