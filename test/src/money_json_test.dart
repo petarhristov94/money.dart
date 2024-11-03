@@ -47,4 +47,25 @@ void main() {
     );
     expect(decodedMoney, equals(money));
   });
+
+  test('No lost in precision for valid money values', () {
+    const largeScale = 12;
+    final largeScaleCurrency = Currency.create('test', largeScale);
+    Currencies().register(largeScaleCurrency);
+
+    final privateNetWealth = BigInt.from(454e+12);
+    final privateNetWealthMoney = Money.fromBigInt(
+      privateNetWealth * largeScaleCurrency.scaleFactor,
+      isoCode: 'test',
+    );
+    expect(privateNetWealthMoney.amount.integerPart, equals(privateNetWealth));
+    expect(privateNetWealthMoney.amount.decimalPart.toInt(), equals(0));
+    expect(privateNetWealthMoney.amount.scale, equals(largeScale));
+
+    final reconstructed = Money.fromJson(privateNetWealthMoney.toJson());
+    expect(reconstructed.amount.integerPart, equals(privateNetWealth));
+    expect(reconstructed.amount.decimalPart.toInt(), equals(0));
+    expect(reconstructed.amount.scale, equals(largeScale));
+    expect(reconstructed, equals(privateNetWealthMoney));
+  });
 }
