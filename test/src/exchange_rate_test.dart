@@ -3,6 +3,8 @@
  * Proprietary and confidential
  * Written by Brett Sutton <bsutton@onepub.dev>, Jan 2022
  */
+
+import 'dart:convert';
 import 'package:money2/money2.dart';
 import 'package:test/test.dart';
 
@@ -70,6 +72,61 @@ void main() {
           decimalDigits: 6, fromCode: 'RUB', toCode: 'USD');
       expect(price.exchangeTo(rubToUsExchangeRate).format('###,###.## S'),
           equals(r'376.46 $'));
+    });
+
+    group('JSON serialization', () {
+      final exchangeRate = ExchangeRate.fromNum(
+        0.75312,
+        decimalDigits: 5,
+        fromCode: 'AUD',
+        toCode: 'USD',
+      );
+
+      final expectedJson = <String, dynamic>{
+        'exchangeRateMinorUnits': 75312.0,
+        'decimalDigits': 5,
+        'fromIsoCode': 'AUD',
+        'toIsoCode': 'USD',
+        'toDecimalDigits': null,
+      };
+
+      test('works correctly', () {
+        expect(exchangeRate.toJson(), equals(expectedJson));
+        // Can not compare instances directly because they are not immutable.
+        expect(
+          ExchangeRate.fromJson(expectedJson).toJson(),
+          equals(exchangeRate.toJson()),
+        );
+      });
+
+      test('encodes as string correctly', () {
+        final customJsonString = jsonEncode(exchangeRate);
+        final expectedJsonString = jsonEncode(expectedJson);
+        expect(customJsonString, equals(expectedJsonString));
+      });
+
+      test('decodes correctly from string', () {
+        final customJsonString = jsonEncode(exchangeRate);
+        final decodedCustom = ExchangeRate.fromJson(
+          jsonDecode(customJsonString) as Map<String, dynamic>,
+        );
+        expect(decodedCustom.toJson(), equals(exchangeRate.toJson()));
+      });
+
+      test('works both ways (serialization and deserialization)', () {
+        expect(
+          exchangeRate.toJson(),
+          equals(ExchangeRate.fromJson(exchangeRate.toJson()).toJson()),
+        );
+      });
+
+      test('full round trip is equal to original', () {
+        final customJsonString = jsonEncode(exchangeRate);
+        final decodedCustom = ExchangeRate.fromJson(
+          jsonDecode(customJsonString) as Map<String, dynamic>,
+        );
+        expect(decodedCustom.toJson(), equals(exchangeRate.toJson()));
+      });
     });
   });
 }
