@@ -109,8 +109,8 @@ class ExchangeRate {
   /// [toJson] method.
   factory ExchangeRate.fromJson(Map<String, dynamic> json) =>
       ExchangeRate.fromFixed(
-        Fixed.fromBigInt(
-          BigInt.from(json['exchangeRateMinorUnits'] as double),
+        Fixed.parse(
+          '${json['exchangeRateIntegerPart']}.${json['exchangeRateDecimalPart']}',
           scale: json['decimalDigits'] as int,
         ),
         fromIsoCode: json['fromIsoCode'] as String,
@@ -237,7 +237,8 @@ class ExchangeRate {
   /// The JSON representation can be used to recreate this [ExchangeRate]
   /// instance using the [ExchangeRate.fromJson] factory.
   Map<String, dynamic> toJson() => {
-        'exchangeRateMinorUnits': exchangeRate.minorUnits.toDouble(),
+        'exchangeRateIntegerPart': exchangeRate.integerPart.toInt(),
+        'exchangeRateDecimalPart': exchangeRate.decimalPart.toInt(),
         'decimalDigits': exchangeRate.scale,
         'fromIsoCode': fromCurrency.isoCode,
         'toIsoCode': toCurrency.isoCode,
