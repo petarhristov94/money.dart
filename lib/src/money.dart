@@ -762,7 +762,7 @@ class MoneyParseException implements MoneyException {
       required int monetaryIndex,
       required String monetaryValue}) {
     final message = '''
-$monetaryValue contained an unexpected character '${compressedValue[monetaryIndex]}' at pos $monetaryIndex 
+$monetaryValue contained an unexpected character '${compressedValue[monetaryIndex]}' at pos $monetaryIndex
         when a match for pattern character ${compressedPattern[patternIndex]} at pos $patternIndex was expected.''';
     return MoneyParseException(message);
   }
