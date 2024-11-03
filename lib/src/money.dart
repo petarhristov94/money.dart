@@ -356,6 +356,27 @@ class Money implements Comparable<Money> {
       throw MoneyParseException(e.toString());
     }
   }
+
+  /// ******************************************
+  /// JSON serialization
+  /// ******************************************
+
+  /// Creates a [Money] instance from a JSON representation.
+  ///
+  /// The JSON representation must contain three keys:
+  ///   * 'amountMinorUnits' - the minor units of the [amount] as double.
+  ///   * 'amountScale' - the number of decimal digits in the [amount] as int.
+  ///   * 'currencyIsoCode' - the [currency] isoCode of the amount as string.
+  ///
+  /// This format is used by the [toJson] method.
+  factory Money.fromJson(Map<String, dynamic> json) => Money.fromFixed(
+        Fixed.fromBigInt(
+          BigInt.from(json['amountMinorUnits'] as double),
+          scale: json['amountScale'] as int,
+        ),
+        isoCode: json['currencyIsoCode'] as String,
+      );
+
   /* Internal constructor *****************************************************/
   const Money._from(this.amount, this.currency);
   /* Instantiation ************************************************************/
@@ -474,6 +495,16 @@ class Money implements Comparable<Money> {
 
   @override
   String toString() => encodedBy(PatternEncoder(this, currency.pattern));
+
+  /// Returns a JSON representation of this [Money] instance.
+  ///
+  /// The JSON representation can be used to recreate this [Money] instance
+  /// using the [Money.fromJson] factory.
+  Map<String, dynamic> toJson() => {
+        'amountMinorUnits': amount.minorUnits.toDouble(),
+        'amountScale': amount.scale,
+        'currencyIsoCode': currency.isoCode,
+      };
 
   /// The component of the number before the decimal point
   BigInt get integerPart => amount.integerPart;
