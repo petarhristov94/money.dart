@@ -54,17 +54,18 @@ void main() {
     Currencies().register(largeScaleCurrency);
 
     final privateNetWealth = BigInt.from(454e+12);
+    final decimalPart = BigInt.from(123456789012);
     final privateNetWealthMoney = Money.fromBigInt(
-      privateNetWealth * largeScaleCurrency.scaleFactor,
+      privateNetWealth * largeScaleCurrency.scaleFactor + decimalPart,
       isoCode: 'test',
     );
     expect(privateNetWealthMoney.amount.integerPart, equals(privateNetWealth));
-    expect(privateNetWealthMoney.amount.decimalPart.toInt(), equals(0));
+    expect(privateNetWealthMoney.amount.decimalPart, equals(decimalPart));
     expect(privateNetWealthMoney.amount.scale, equals(largeScale));
 
     final reconstructed = Money.fromJson(privateNetWealthMoney.toJson());
     expect(reconstructed.amount.integerPart, equals(privateNetWealth));
-    expect(reconstructed.amount.decimalPart.toInt(), equals(0));
+    expect(reconstructed.amount.decimalPart, equals(decimalPart));
     expect(reconstructed.amount.scale, equals(largeScale));
     expect(reconstructed, equals(privateNetWealthMoney));
   });
