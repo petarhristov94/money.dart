@@ -83,9 +83,9 @@ void main() {
       );
 
       final expectedJson = <String, dynamic>{
-        'exchangeRateIntegerPart': 0,
-        'exchangeRateDecimalPart': 75312,
-        'decimalDigits': 5,
+        'integerPart': 0,
+        'decimalPart': 75312,
+        'decimals': 5,
         'fromIsoCode': 'AUD',
         'toIsoCode': 'USD',
         'toDecimalDigits': null,

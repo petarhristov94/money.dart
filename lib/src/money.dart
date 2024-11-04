@@ -367,10 +367,10 @@ class Money implements Comparable<Money> {
   /// [toJson] method.
   factory Money.fromJson(Map<String, dynamic> json) => Money.fromFixed(
         Fixed.parse(
-          '${json['amountIntegerPart']}.${json['amountDecimalPart']}',
-          scale: json['amountScale'] as int,
+          '${json['integerPart']}.${json['decimalPart']}',
+          scale: json['decimals'] as int,
         ),
-        isoCode: json['currencyIsoCode'] as String,
+        isoCode: json['isoCode'] as String,
       );
 
   /* Internal constructor *****************************************************/
@@ -497,10 +497,10 @@ class Money implements Comparable<Money> {
   /// The JSON representation can be used to recreate this [Money] instance
   /// using the [Money.fromJson] factory.
   Map<String, dynamic> toJson() => {
-      'amountIntegerPart': amount.integerPart.toInt(),
-      'amountDecimalPart': amount.decimalPart.toInt(),
-      'amountScale': amount.scale,
-      'currencyIsoCode': currency.isoCode,
+      'integerPart': amount.integerPart.toInt(),
+      'decimalPart': amount.decimalPart.toInt(),
+      'decimals': amount.scale,
+      'isoCode': currency.isoCode,
     };
 
   /// The component of the number before the decimal point
