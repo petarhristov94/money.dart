@@ -1,3 +1,8 @@
+# 5.4.0
+- added json serialisation to Money, Currency and ExchangeRate
+ A big thanks to https://github.com/marcelomendoncasoares for this
+ excellent contribution.
+
 # 5.3.0
 - Merge pull request #88 from bryanoltman/bo/fix-typo
 - fix typo in README.md
