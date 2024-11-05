@@ -12,6 +12,7 @@ Key features of Money2:
 * multi-currency support.
 * intuitive maths operations.
 * fixed precision storage to ensure precise calculation.
+* native JSON serialization and deserialization.
 * detailed documentation and extensive examples to get you up and running.
 * pure Dart implementation.
 * Open Source MIT license.
