@@ -1,3 +1,6 @@
+# 5.4.1
+- add percentage method 
+
 # 5.4.0
 - added json serialisation to Money, Currency and ExchangeRate
  A big thanks to https://github.com/marcelomendoncasoares for this

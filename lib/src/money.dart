@@ -6,6 +6,8 @@
 
 // import 'package:meta/meta.dart' show sealed, immutable;
 
+import 'dart:math';
+
 import 'package:decimal/decimal.dart';
 import 'package:fixed/fixed.dart';
 import 'package:meta/meta.dart';
@@ -245,8 +247,7 @@ class Money implements Comparable<Money> {
   factory Money.fromFixedWithCurrency(Fixed amount, Currency currency,
           {int? decimalDigits}) =>
       Money._from(
-          Fixed.copyWith(amount,
-              scale: decimalDigits ?? currency.decimalDigits),
+          amount.copyWith(scale: decimalDigits ?? currency.decimalDigits),
           currency);
 
   /// Creates a Money from a [Decimal] [amount].
@@ -348,8 +349,7 @@ class Money implements Comparable<Money> {
       final data = decoder.decode(amount);
 
       return Money._from(
-          Fixed.copyWith(data.amount,
-              scale: decimalDigits ?? currency.decimalDigits),
+          data.amount.copyWith(scale: decimalDigits ?? currency.decimalDigits),
           currency);
       // ignore: avoid_catches_without_on_clauses
     } catch (e) {
@@ -392,8 +392,8 @@ class Money implements Comparable<Money> {
       }
     }
     return Money._from(
-        Fixed.copyWith(amount ?? this.amount,
-            scale: decimalDigits ?? this.amount.scale),
+        (amount ?? this.amount)
+            .copyWith(scale: decimalDigits ?? this.amount.scale),
         currency);
   }
 
@@ -497,11 +497,11 @@ class Money implements Comparable<Money> {
   /// The JSON representation can be used to recreate this [Money] instance
   /// using the [Money.fromJson] factory.
   Map<String, dynamic> toJson() => {
-      'integerPart': amount.integerPart.toInt(),
-      'decimalPart': amount.decimalPart.toInt(),
-      'decimals': amount.scale,
-      'isoCode': currency.isoCode,
-    };
+        'integerPart': amount.integerPart.toInt(),
+        'decimalPart': amount.decimalPart.toInt(),
+        'decimals': amount.scale,
+        'isoCode': currency.isoCode,
+      };
 
   /// The component of the number before the decimal point
   BigInt get integerPart => amount.integerPart;
@@ -524,8 +524,7 @@ class Money implements Comparable<Money> {
   static Money decoding<T>(T value, MoneyDecoder<T> decoder) {
     final data = decoder.decode(value);
 
-    return Money._from(
-        Fixed.copyWith(data.amount, scale: data.currency.decimalDigits),
+    return Money._from(data.amount.copyWith(scale: data.currency.decimalDigits),
         data.currency);
   }
 
@@ -707,13 +706,21 @@ class Money implements Comparable<Money> {
   }
 
   /// Returns [Money] multiplied by [multiplier], using schoolbook rounding.
-  Money operator *(num multiplier) =>
-      _withAmount(Fixed.copyWith(amount.multiply(multiplier),
-          scale: currency.decimalDigits));
+  Money operator *(num multiplier) => _withAmount(
+      amount.multiply(multiplier).copyWith(scale: currency.decimalDigits));
 
   /// Returns [Money] divided by [divisor], using schoolbook rounding.
   Money operator /(num divisor) => _withAmount(
-      Fixed.copyWith(amount.divide(divisor), scale: currency.decimalDigits));
+      amount.divide(divisor).copyWith(scale: currency.decimalDigits));
+
+  /// Calculates the percentage that [part] is of this.
+  /// So this:100, part: 10 yeilds 0.1 which is 10%.
+  /// The scale of the result is the larger scale of this and [part]
+  Fixed percentage(Money part) {
+    final scale = max(decimalDigits, decimalDigits);
+    return (toFixed() / part.toFixed() / Fixed.fromInt(100, scale: 0))
+        .copyWith(scale: scale);
+  }
 
   /// Divides this by [divisor] and returns the result as a double
   double dividedBy(Money divisor) {
