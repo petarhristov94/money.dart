@@ -16,4 +16,13 @@ void main() {
     expect(percentage, equals(Fixed.fromInt(333, scale: 3)));
     expect(percentage.scale, equals(onehundred.decimalDigits));
   });
+
+  test('division', () {
+    final amount = Money.parse('314.00', isoCode: 'AUD');
+
+    final result = amount.divideByFixed(Fixed.one);
+
+    expect(result.amount, equals(Fixed.fromInt(314, scale: 0)));
+    expect(result.decimalDigits, equals(2));
+  });
 }
