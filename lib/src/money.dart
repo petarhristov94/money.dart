@@ -20,6 +20,7 @@ import 'exchange_rates/exchange_rate.dart';
 import 'money_data.dart';
 import 'pattern_decoder.dart';
 import 'pattern_encoder.dart';
+import 'percentage.dart';
 
 /// Allows you to store, print and perform mathematically operations on money
 /// whilst maintaining precision.
@@ -713,14 +714,20 @@ class Money implements Comparable<Money> {
   Money operator /(num divisor) => _withAmount(
       amount.divide(divisor).copyWith(scale: currency.decimalDigits));
 
-  /// Calculates the percentage that [part] is of this.
-  /// So this:100, part: 10 yeilds 0.1 which is 10%.
-  /// The scale of the result is the larger scale of this and [part]
-  Fixed percentage(Money part) {
-    final scale = max(decimalDigits, decimalDigits);
-    return (toFixed() / part.toFixed() / Fixed.fromInt(100, scale: 0))
-        .copyWith(scale: scale);
+  /// Calculates the percentage that this is of [base].
+  /// So this:10, base: 100 yeilds 0.1 which is 10%.
+  /// The scale of the result is the larger scale of this and [base]
+  Percentage percentageOf(Money base) {
+    final scale = max(decimalDigits, base.decimalDigits);
+    return Percentage.fromFixed(
+        (base.toFixed() / toFixed() / Fixed.fromInt(100, scale: 0))
+            .copyWith(scale: scale));
   }
+
+  /// Multiples this by the given percentage
+  /// $1 * 20% = $0.20
+  Money multipliedByPercentage(Percentage percentage) =>
+      multiplyByFixed(percentage);
 
   /// Divides this by [divisor] and returns the result as a double
   double dividedBy(Money divisor) {

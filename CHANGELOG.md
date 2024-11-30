@@ -1,5 +1,10 @@
-# 5.4.1
-- add percentage method 
+# 5.4.2
+- added methods
+multipliedByPercentage
+percentageOf
+
+- added helper class Percentage.
+
 
 # 5.4.0
 - added json serialisation to Money, Currency and ExchangeRate
