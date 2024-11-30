@@ -1,3 +1,6 @@
+# 5.4.4
+- Fixed a bug in the multipledByPercent, it was failing to divide by 100 after we changed the way percentages are represented.
+
 # 5.4.3
 - added additional tests.
 - fixed arg names to divide methods.
