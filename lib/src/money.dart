@@ -720,7 +720,7 @@ class Money implements Comparable<Money> {
   Percentage percentageOf(Money base) {
     final scale = max(decimalDigits, base.decimalDigits);
     return Percentage.fromFixed(
-        (base.toFixed() / toFixed() / Fixed.fromInt(100, scale: 0))
+        (toFixed() / base.toFixed() * Fixed.fromInt(100, scale: 0))
             .copyWith(scale: scale));
   }
 

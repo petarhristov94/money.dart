@@ -1,9 +1,12 @@
-# 5.4.2
+# 5.4.3
+- added additional tests.
+- fixed arg names to divide methods.
 - added methods
-multipliedByPercentage
-percentageOf
+  multipliedByPercentage
+  percentageOf
 
 - added helper class Percentage.
+as a whole number rather than a decimal e.g. 10% is stored as 10 not 0.1
 
 
 # 5.4.0

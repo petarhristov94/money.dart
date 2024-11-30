@@ -3,13 +3,14 @@ import '../money2.dart';
 /// Helper class to allow us to do percentage
 /// calculations on Money amounts.
 /// Percentage is described as a decimal [Fixed]
-/// so 20% is expressed as 0.2
+/// so 20% is expressed as 20.0
 class Percentage extends Fixed {
   /// Creates a percentage.
   /// Pass 20 to get 20%
   /// For 20.5% (0.205) use:
   /// ```
-  /// Percentage(205, decimals: 3);
+  /// Percentage(20, decimals: 0) == 20%;
+  /// Percentage(205, decimals: 1) == 20.5%;
   /// ```
   // ignore: matching_super_parameters
   Percentage(super.percentage, {int decimalDigits = 2})
@@ -18,6 +19,12 @@ class Percentage extends Fixed {
   Percentage.fromFixed(Fixed fixed)
       : super.fromBigInt(fixed.minorUnits, scale: fixed.scale);
 
+  /// Parses [amount] as a percentage.
+  ///
+  /// ```
+  /// Parse.tryParse('10') == 10%
+  /// Parse.tryParse('0.10') == 0.10%
+  /// ```
   factory Percentage.tryParse(String amount, {int decimalDigits = 2}) {
     Fixed fixed;
     if (amount.trim().isEmpty) {
@@ -28,6 +35,12 @@ class Percentage extends Fixed {
 
     return Percentage(fixed.minorUnits.toInt(), decimalDigits: fixed.scale);
   }
+
+  /// Creates a percentage from an int.
+  /// ```
+  /// Percentage.fromInt(10, decimalDigits:0) === 10%
+  /// Percentage.fromInt(10, decimalDigits:2) === 0.10%
+  /// ```
   factory Percentage.fromInt(int? amount, {int decimalDigits = 2}) {
     final fixed = Fixed.fromInt(amount ?? 0, scale: decimalDigits);
 
