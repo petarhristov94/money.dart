@@ -42,6 +42,19 @@ void main() {
       expect(percentage, equals(Percentage.fromInt(100, decimalDigits: 0)));
       expect(percentage.scale, equals(onehundred.decimalDigits));
     });
+
+    test('multipliedBy', () {
+      final onehundred =
+          Money.fromInt(100000, isoCode: 'AUD', decimalDigits: 3);
+
+      final ten = Money.fromInt(10000, isoCode: 'AUD', decimalDigits: 3);
+      final tenPercent = Percentage.tryParse('10');
+      expect(onehundred.multipliedByPercentage(tenPercent), equals(ten));
+
+      final threePercent = Percentage.tryParse('3');
+      final three = Money.fromInt(3000, isoCode: 'AUD', decimalDigits: 3);
+      expect(onehundred.multipliedByPercentage(threePercent), equals(three));
+    });
   });
 
   test('division', () {

@@ -727,7 +727,7 @@ class Money implements Comparable<Money> {
   /// Multiples this by the given percentage
   /// $1 * 20% = $0.20
   Money multipliedByPercentage(Percentage percentage) =>
-      multiplyByFixed(percentage);
+      multiplyByFixed(percentage).divideByFixed(Fixed.fromInt(100, scale: 0));
 
   /// Divides this by [divisor] and returns the result as a double
   double dividedBy(Money divisor) {
