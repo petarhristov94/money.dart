@@ -738,8 +738,8 @@ class Money implements Comparable<Money> {
   Money multiplyByFixed(Fixed multiplier) =>
       Money.fromFixedWithCurrency(amount * multiplier, currency);
 
-  Money divideByFixed(Fixed multiplier) =>
-      Money.fromFixedWithCurrency(amount / multiplier, currency);
+  Money divideByFixed(Fixed divisor) =>
+      Money.fromFixedWithCurrency(amount / divisor, currency);
 
   Money modulusFixed(Fixed other) =>
       Money.fromFixedWithCurrency(amount % other, currency);
