@@ -1,3 +1,6 @@
+# 5.4.5
+- changed percentage.copyWith so it returns a Percentage not a Fixed.
+
 # 5.4.4
 - Fixed a bug in the multipledByPercent, it was failing to divide by 100 after we changed the way percentages are represented.
 

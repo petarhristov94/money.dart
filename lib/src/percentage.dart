@@ -49,6 +49,7 @@ class Percentage extends Fixed {
 
   /// Returns a new [Percentage] value from an existing one
   /// changing the scale to [scale].
+  @override
   Percentage copyWith({int? scale}) =>
       Percentage.fromFixed(super.copyWith(scale: scale));
 
