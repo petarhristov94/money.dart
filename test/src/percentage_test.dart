@@ -29,5 +29,16 @@ void main() {
     expect(percentage.decimalDigits, equals(2));
 
     expect(percentage.toString(), equals('2.05%'));
+
+    /// copyWith
+    percentage = Percentage.fromInt(20500, decimalDigits: 4);
+    expect(percentage.integerPart, equals(BigInt.from(2)));
+    expect(percentage.decimalPart, equals(BigInt.from(500)));
+    expect(percentage.decimalDigits, equals(4));
+
+    final one = percentage.copyWith(scale: 3);
+    expect(one.integerPart, equals(BigInt.from(2)));
+    expect(one.decimalPart, equals(BigInt.from(50)));
+    expect(one.decimalDigits, equals(3));
   });
 }

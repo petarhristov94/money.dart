@@ -47,6 +47,11 @@ class Percentage extends Fixed {
     return Percentage(fixed.minorUnits.toInt(), decimalDigits: fixed.scale);
   }
 
+  /// Returns a new [Percentage] value from an existing one
+  /// changing the scale to [scale].
+  Percentage copyWith({int? scale}) =>
+      Percentage.fromFixed(super.copyWith(scale: scale));
+
   int get decimalDigits => super.scale;
 
   static final Percentage zero = Percentage(0, decimalDigits: 3);
