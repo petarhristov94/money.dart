@@ -16,26 +16,6 @@ class Percentage extends Fixed {
   Percentage(super.percentage, {int decimalDigits = 2})
       : super.fromInt(scale: decimalDigits);
 
-  Percentage.fromFixed(Fixed fixed)
-      : super.fromBigInt(fixed.minorUnits, scale: fixed.scale);
-
-  /// Parses [amount] as a percentage.
-  ///
-  /// ```
-  /// Parse.tryParse('10') == 10%
-  /// Parse.tryParse('0.10') == 0.10%
-  /// ```
-  factory Percentage.tryParse(String amount, {int decimalDigits = 2}) {
-    Fixed fixed;
-    if (amount.trim().isEmpty) {
-      fixed = Fixed.zero;
-    } else {
-      fixed = Fixed.tryParse(amount, scale: decimalDigits) ?? Fixed.zero;
-    }
-
-    return Percentage(fixed.minorUnits.toInt(), decimalDigits: fixed.scale);
-  }
-
   /// Creates a percentage from an int.
   /// ```
   /// Percentage.fromInt(10, decimalDigits:0) === 10%
@@ -43,6 +23,31 @@ class Percentage extends Fixed {
   /// ```
   factory Percentage.fromInt(int? amount, {int decimalDigits = 2}) {
     final fixed = Fixed.fromInt(amount ?? 0, scale: decimalDigits);
+
+    return Percentage(fixed.minorUnits.toInt(), decimalDigits: fixed.scale);
+  }
+
+  Percentage.fromFixed(Fixed fixed)
+      : super.fromBigInt(fixed.minorUnits, scale: fixed.scale);
+
+  /// Parses [amount] as a percentage returning null
+  /// if [amount] is not a valid number.
+  ///
+  /// ```
+  /// Parse.tryParse('10') == 10%
+  /// Parse.tryParse('0.10') == 0.10%
+  /// ```
+  static Percentage? tryParse(String amount, {int decimalDigits = 2}) {
+    Fixed? fixed;
+    if (amount.trim().isEmpty) {
+      fixed = Fixed.zero;
+    } else {
+      fixed = Fixed.tryParse(amount, scale: decimalDigits);
+    }
+
+    if (fixed == null) {
+      return null;
+    }
 
     return Percentage(fixed.minorUnits.toInt(), decimalDigits: fixed.scale);
   }

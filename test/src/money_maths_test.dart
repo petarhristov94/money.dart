@@ -49,11 +49,11 @@ void main() {
 
       final ten = Money.fromInt(10000, isoCode: 'AUD', decimalDigits: 3);
       final tenPercent = Percentage.tryParse('10');
-      expect(onehundred.multipliedByPercentage(tenPercent), equals(ten));
+      expect(onehundred.multipliedByPercentage(tenPercent!), equals(ten));
 
       final threePercent = Percentage.tryParse('3');
       final three = Money.fromInt(3000, isoCode: 'AUD', decimalDigits: 3);
-      expect(onehundred.multipliedByPercentage(threePercent), equals(three));
+      expect(onehundred.multipliedByPercentage(threePercent!), equals(three));
     });
   });
 
