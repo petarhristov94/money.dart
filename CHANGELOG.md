@@ -1,3 +1,6 @@
+# 5.4.6
+- modified Percentage.tryParse to return null if the amount can't be parsed. Previoulsy we returned zero which isn't in keeping with the expected signature a tryParse method.
+
 # 5.4.5
 - changed percentage.copyWith so it returns a Percentage not a Fixed.
 
