@@ -78,10 +78,9 @@ class PatternEncoder implements MoneyEncoder<String> {
     final moneyPattern = _getMoneyPattern(majorPattern);
     _checkZeros(moneyPattern, patternGroupSeparator, minor: false);
 
-    final integerPart = data.integerPart;
-
-    final formattedMajorUnits =
-        _getFormattedMajorUnits(data, moneyPattern, integerPart);
+    final formattedMajorUnits = data.amount
+        .format(moneyPattern)
+        .replaceAll(patternGroupSeparator, data.currency.groupSeparator);
 
     // replace the the money components with a single #
     var compressedMajorPattern = _compressMoney(majorPattern);
@@ -116,22 +115,6 @@ class PatternEncoder implements MoneyEncoder<String> {
     }
 
     return formatted;
-  }
-
-  ///
-  String _getFormattedMajorUnits(
-      MoneyData data, String moneyPattern, BigInt majorUnits) {
-    // format the no. into that pattern.
-    var formattedMajorUnits =
-        NumberFormat(moneyPattern).format(majorUnits.toInt());
-
-    if (!majorUnits.isNegative && data.amount.isNegative) {
-      formattedMajorUnits = '-$formattedMajorUnits';
-    }
-
-    // Convert to the MoneyData's preferred group separator
-    return formattedMajorUnits.replaceAll(
-        patternGroupSeparator, data.currency.groupSeparator);
   }
 
   /// returns the currency isoCode from [data] using the

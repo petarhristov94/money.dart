@@ -11,9 +11,10 @@ import 'package:test/test.dart';
 void main() {
   final money = Money.fromInt(1025, isoCode: 'USD');
   final expectedJson = <String, dynamic>{
-    'integerPart': 10,
-    'decimalPart': 25,
-    'decimals': 2,
+    'amount': {
+      'minorUnits': '1025',
+      'scale': 2,
+    },
     'isoCode': 'USD',
   };
 

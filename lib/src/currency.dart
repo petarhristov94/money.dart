@@ -167,7 +167,7 @@ class Currency {
       throw ArgumentError.value(
           precision, 'precision', 'Must be a non-negative value.');
     }
-    return BigInt.from(pow(10, precision));
+    return BigInt.from(10).pow(precision);
   }
 
   /// Takes a [majorUnits] and a [minorUnits] and returns

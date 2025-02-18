@@ -253,7 +253,7 @@ void main() {
           decimalSeparator: '/',
           groupSeparator: ' ',
           symbol: '€',
-          pattern: '###,###.##S');
+          pattern: '#,###,###.##S');
 
       final amount = Money.parseWithCurrency('1 234 567/89€', euroCurrency);
       final formatted = amount.toString();
