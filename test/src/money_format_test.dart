@@ -84,7 +84,7 @@ void main() {
           decimalSeparator: '/',
           groupSeparator: ' ',
           symbol: '€',
-          pattern: '###,###.##S');
+          pattern: '#,###,###.##S');
 
       final amount =
           Money.fromIntWithCurrency(1234567890, euroCurrency, decimalDigits: 3);
