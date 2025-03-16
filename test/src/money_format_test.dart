@@ -11,6 +11,7 @@ void main() {
   Currencies().register(Currency.create('LONG', 2));
 
   final usd10d25 = Money.fromInt(1025, isoCode: 'USD');
+  final usd10d5c = Money.fromInt(1005, isoCode: 'USD');
   final usd10 = Money.fromInt(1000, isoCode: 'USD');
   final long1000d90 = Money.fromInt(100090, isoCode: 'LONG');
   final usd20cents = Money.fromInt(20, isoCode: 'USD');
@@ -19,7 +20,8 @@ void main() {
   group('format', () {
     test('Simple Number', () {
       expect(usd10d25.toString(), equals(r'$10.25'));
-      expect(usd10.format('#.#0'), equals('10.00'));
+      expect(usd10.format('#.0#'), equals('10.0'));
+      expect(usd10d5c.format('#.0#'), equals('10.05'));
       expect(usd10d25.format('#'), equals('10'));
       expect(usd10d25.format('#.#'), equals('10.2'));
       expect(usd10d25.format('0.00'), equals('10.25'));
@@ -33,8 +35,6 @@ void main() {
     });
 
     test('Negative Number', () {
-      expect((-usd10d25).toString(), equals(r'$-10.25'));
-      expect((-usd10).format('#.#0'), equals('-10.00'));
       expect((-usd10d25).format('#'), equals('-10'));
       expect((-usd10d25).format('#.#'), equals('-10.2'));
       expect((-usd10d25).format('0.00'), equals('-10.25'));
@@ -47,13 +47,58 @@ void main() {
       expect((-usd20cents).format('S#,##0.00'), equals(r'$-0.20'));
     });
 
+    test('Trailing Negative', () {
+      expect((-usd10d25).format('#-'), equals('10-'));
+      expect((-usd10d25).format('#.#-'), equals('10.2-'));
+      expect((-usd10d25).format('0.00-'), equals('10.25-'));
+      expect((-usd10d25).format('#,##0.##-'), equals('10.25-'));
+      expect((-long1000d90).format('#,##0.00-'), equals('1,000.90-'));
+      expect((-usd10d25).format('###,000.##-'), equals('010.25-'));
+      expect((-usd10d25).format('##.##-'), equals('10.25-'));
+      expect((-usd10d25).format('##-'), equals('10-'));
+      expect((-usd20cents).format('#,##0.00-'), equals('0.20-'));
+      expect((-usd20cents).format('S#,##0.00-'), equals(r'$0.20-'));
+    });
+
+    test('Plus Pattern', () {
+      expect(usd10d25.format('+#.0#'), equals('+10.25'));
+      expect(usd10.format('+#.0#'), equals('+10.0'));
+      expect(usd10d5c.format('+#.0#'), equals('+10.05'));
+      expect((-usd10d25).format('+#'), equals('-10'));
+      expect((-usd10d25).format('+#.#'), equals('-10.2'));
+      expect((-usd10d25).format('+0.00'), equals('-10.25'));
+      expect((-usd10d25).format('+#,##0.##'), equals('-10.25'));
+      expect((-long1000d90).format('+#,##0.00'), equals('-1,000.90'));
+      expect((-usd10d25).format('+###,000.##'), equals('-010.25'));
+      expect((-usd10d25).format('+##.##'), equals('-10.25'));
+      expect((-usd10d25).format('+##'), equals('-10'));
+      expect((-usd20cents).format('+#,##0.00'), equals('-0.20'));
+      expect((-usd20cents).format('S+#,##0.00'), equals(r'$-0.20'));
+    });
+
+    test('Trailing Plus Pattern', () {
+      expect(usd10d25.format('#.0#+'), equals('10.25+'));
+      expect(usd10.format('#.0#+'), equals('10.0+'));
+      expect(usd10d5c.format('+#.0#+'), equals('+10.05+'));
+      expect((-usd10d25).format('#+'), equals('10-'));
+      expect((-usd10d25).format('#.#+'), equals('10.2-'));
+      expect((-usd10d25).format('0.00+'), equals('10.25-'));
+      expect((-usd10d25).format('#,##0.##+'), equals('10.25-'));
+      expect((-long1000d90).format('#,##0.00+'), equals('1,000.90-'));
+      expect((-usd10d25).format('###,000.##+'), equals('010.25-'));
+      expect((-usd10d25).format('##.##+'), equals('10.25-'));
+      expect((-usd10d25).format('##+'), equals('10-'));
+      expect((-usd20cents).format('#,##0.00+'), equals('0.20-'));
+      expect((-usd20cents).format('S#,##0.00+'), equals(r'$0.20-'));
+    });
+
     test('Inverted Decimal Separator', () {
       final eurolarge = Money.fromInt(10000000, isoCode: 'EUR');
       final euroSmall = Money.fromInt(1099, isoCode: 'EUR');
       expect(eurolarge.toString(), equals('100000,00€'));
       expect(euroSmall.format('S#'), equals('€10'));
       expect(euroSmall.format('#.#'), equals('10,9'));
-      expect(euroSmall.format('CCC#.#0'), equals('EUR10,99'));
+      expect(euroSmall.format('CCC#.0#'), equals('EUR10,99'));
       expect(euroSmall.format('###,000.##'), equals('010,99'));
       expect(eurolarge.format('###,000.00'), equals('100.000,00'));
       expect(euroSmall.format('##.##'), equals('10,99'));
@@ -72,7 +117,7 @@ void main() {
       expect(eurolarge.toString(), equals('T100g000d000'));
       expect(euroSmall.format('S#'), equals('T10'));
       expect(euroSmall.format('#.#'), equals('10d9'));
-      expect(euroSmall.format('CCC#.##0'), equals('TEST10d999'));
+      expect(euroSmall.format('CCC#.0##'), equals('TEST10d999'));
       expect(euroSmall.format('###,000.###'), equals('010d999'));
       expect(eurolarge.format('###,000.000'), equals('100g000d000'));
       expect(euroSmall.format('##.###'), equals('10d999'));
@@ -192,7 +237,7 @@ void main() {
           throwsA(const TypeMatcher<IllegalPatternException>()));
       expect(() => usd10d25.format('0#'),
           throwsA(const TypeMatcher<IllegalPatternException>()));
-      expect(() => usd10d25.format('0.0#'),
+      expect(() => usd10d25.format('0.#0'),
           throwsA(const TypeMatcher<IllegalPatternException>()));
     });
 

@@ -33,7 +33,7 @@ void main() {
           equals(r'$1234.56'));
 
       expect(Currencies().find('INR')!.parse('₹1234.56').toString(),
-          equals('₹1234.56'));
+          equals('₹1,234.56'));
     });
 
     test('Test 1000 separator', () {

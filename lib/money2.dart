@@ -69,7 +69,7 @@
 ///   > $AUD11
 /// ```
 
-library money2;
+library;
 
 import 'src/currency.dart';
 import 'src/exchange_rates/exchange_platform.dart';
@@ -81,9 +81,9 @@ export 'src/common_currencies.dart';
 export 'src/currencies.dart';
 export 'src/currency.dart';
 export 'src/encoders.dart';
+export 'src/exceptions.dart';
 export 'src/exchange_rates/exchange_platform.dart';
 export 'src/exchange_rates/exchange_rate.dart';
 export 'src/money.dart';
 export 'src/money_data.dart';
-export 'src/pattern_encoder.dart' show IllegalPatternException;
 export 'src/percentage.dart';

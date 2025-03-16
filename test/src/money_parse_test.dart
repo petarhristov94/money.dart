@@ -220,7 +220,7 @@ void main() {
       expect(one.format('#'), equals('1'));
       expect(one.format('#.#'), equals('1.1'));
       expect(one.format('#.##'), equals('1.12'));
-      expect(one.format('#.##0'), equals('1.120'));
+      expect(one.format('#.000'), equals('1.120'));
 
       expect(one.format('#.0'), equals('1.1'));
       expect(one.format('#.00'), equals('1.12'));

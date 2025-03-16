@@ -6,6 +6,7 @@
 
 import 'common_currencies.dart';
 import 'currency.dart';
+import 'exceptions.dart';
 import 'money.dart';
 import 'pattern_decoder.dart';
 
@@ -267,31 +268,4 @@ class Currencies {
 
     return monetaryValue.substring(matches.first.start, matches.first.end);
   }
-}
-
-/// Thrown if the currency is not registered.
-class UnknownCurrencyException implements MoneyException {
-  /// Thrown if the currency is not registered.
-  UnknownCurrencyException(this.isoCode);
-
-  /// The [isoCode] or monetary amount that contained the unknow currency
-  String isoCode;
-
-  @override
-  String toString() =>
-      "An unknown currency '$isoCode' was passed. Register the currency"
-      ' via [Currencies().register()] and try again.';
-}
-
-/// Thrown if an exchange is attempted with a [Money] has a [Currency] which
-/// doesn't match the exchange rate.
-class MismatchedCurrencyException extends MoneyException {
-  /// Thrown if an exchange is attempted with a [Money] has a [Currency] which
-  /// doesn't match the exchange rate.
-  MismatchedCurrencyException(
-      {required String expected, required String actual}) {
-    message = "The exchange rate 'fromCurrency' of $expected is not the "
-        "same as the Money's currency $actual";
-  }
-  late final String message;
 }

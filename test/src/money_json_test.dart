@@ -5,16 +5,15 @@
  */
 
 import 'dart:convert';
+
 import 'package:money2/money2.dart';
 import 'package:test/test.dart';
 
 void main() {
   final money = Money.fromInt(1025, isoCode: 'USD');
   final expectedJson = <String, dynamic>{
-    'amount': {
-      'minorUnits': '1025',
-      'scale': 2,
-    },
+    'minorUnits': '1025',
+    'decimals': 2,
     'isoCode': 'USD',
   };
 

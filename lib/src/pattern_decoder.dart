@@ -9,7 +9,7 @@ import 'package:fixed/fixed.dart';
 
 import 'currency.dart';
 import 'encoders.dart';
-import 'money.dart';
+import 'exceptions.dart';
 import 'money_data.dart';
 import 'pattern_encoder.dart';
 import 'util.dart';

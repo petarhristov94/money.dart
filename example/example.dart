@@ -5,6 +5,7 @@
  */
 import 'package:decimal/decimal.dart';
 import 'package:money2/money2.dart';
+// The print statements are intended for this example.
 // ignore_for_file: avoid_print
 
 void main() {

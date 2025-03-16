@@ -4,6 +4,7 @@
  * Written by Brett Sutton <bsutton@onepub.dev>, Jan 2022
  */
 
+import '../exceptions.dart';
 import '../money.dart';
 import 'exchange_rate.dart';
 
@@ -57,23 +58,4 @@ class ExchangePlatform {
   }
 
   _CodePair _generate(CurrencyIsoCode from, CurrencyIsoCode to) => '$from:$to';
-}
-
-/// Thrown if an attempt is made to calcuate the value of a [Money] amount
-/// in another currency for which there isn't a registered exchange rate.
-class UnknownExchangeRateException implements MoneyException {
-  /// Thrown if no exchange rate exists between [from] and [to]
-  UnknownExchangeRateException(this.from, this.to);
-
-  /// The from currency isoCode in the unknown exchange
-  CurrencyIsoCode from;
-
-  /// The to  currency isoCode in the unknown exchange
-  CurrencyIsoCode to;
-
-  @override
-  String toString() =>
-      "An unknown currency exchange was attempted from: '$from' to: '$to'. "
-      'Register the ExchangeRate'
-      ' via [ExchangePlatform.register()] and try again.';
 }

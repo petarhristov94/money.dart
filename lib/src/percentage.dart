@@ -8,7 +8,7 @@ class Percentage extends Fixed {
   /// Creates a percentage.
   /// Pass 20 to get 20%
   /// For 20.5% (0.205) use:
-  /// ```
+  /// ```dart
   /// Percentage(20, decimals: 0) == 20%;
   /// Percentage(205, decimals: 1) == 20.5%;
   /// ```
@@ -17,7 +17,7 @@ class Percentage extends Fixed {
       : super.fromInt(scale: decimalDigits);
 
   /// Creates a percentage from an int.
-  /// ```
+  /// ```dart
   /// Percentage.fromInt(10, decimalDigits:0) === 10%
   /// Percentage.fromInt(10, decimalDigits:2) === 0.10%
   /// ```
@@ -33,7 +33,7 @@ class Percentage extends Fixed {
   /// Parses [amount] as a percentage returning null
   /// if [amount] is not a valid number.
   ///
-  /// ```
+  /// ```dart
   /// Parse.tryParse('10') == 10%
   /// Parse.tryParse('0.10') == 0.10%
   /// ```

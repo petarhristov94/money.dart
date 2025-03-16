@@ -5,6 +5,7 @@
  */
 import 'package:fixed/fixed.dart';
 import 'package:money2/src/common_currencies.dart';
+import 'package:money2/src/exceptions.dart';
 import 'package:money2/src/money.dart';
 import 'package:money2/src/pattern_decoder.dart';
 import 'package:test/test.dart';
@@ -117,6 +118,6 @@ void main() {
 
   test('Issue #53', () {
     final money = Money.parseWithCurrency('₿1.99', CommonCurrencies().btc);
-    expect(money.format('#.##0'), '1.990');
+    expect(money.format('#.000'), '1.990');
   });
 }

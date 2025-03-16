@@ -655,7 +655,11 @@ class CommonCurrencies {
 
   /// Indian Rupee
   final Currency inr = Currency.create('INR', 2,
-      symbol: '₹', country: 'Indian', unit: 'Rupee', name: 'Indian Rupee');
+      symbol: '₹',
+      country: 'Indian',
+      unit: 'Rupee',
+      name: 'Indian Rupee',
+      pattern: 'S##,###.00');
 
   /// Indonesian Rupiah
   final Currency idr = Currency.create(

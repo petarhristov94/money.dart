@@ -10,7 +10,7 @@ import 'package:meta/meta.dart' show immutable, sealed;
 import 'currency.dart';
 import 'money.dart';
 import 'pattern_decoder.dart';
-import 'pattern_encoder.dart';
+import 'pattern_encoder.dart' show PatternEncoder;
 
 /// DTO for exchange of data between an instance of [Money] and [PatternEncoder]
 /// or [PatternDecoder].

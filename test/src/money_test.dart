@@ -135,6 +135,7 @@ void main() {
         expect(fiveDollars, isNot(equals(fourDollars)));
         expect(fiveDollars, isNot(equals(sixDollars)));
         expect(fiveDollars, isNot(equals(fiveEuros)));
+        // intentional check of incompatible types.
         // ignore: unrelated_type_equality_checks
         expect(fiveDollars == 'Not money', equals(false));
       });

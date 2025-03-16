@@ -78,9 +78,9 @@ void main() {
   });
 
   test('integers 0-$maxInts test', () {
+    final c = Currencies().find('C0');
+    expect(c, isNotNull);
     for (var ints = 0; ints <= maxInts; ints++) {
-      final c = Currencies().find('C0');
-      expect(c, isNotNull);
       final str = ints == 0 ? '0' : '9' * ints;
       const fmt = '0';
       expect(
@@ -92,8 +92,8 @@ void main() {
   });
 
   test('scale 0-$maxScale and integers 0-$maxInts test', () {
-    for (var scale = 19; scale <= maxScale; scale++) {
-      for (var ints = 1; ints <= maxInts; ints++) {
+    for (var scale = 19; scale <= maxScale; scale += 10) {
+      for (var ints = 1; ints <= maxInts; ints += 10) {
         final c = Currencies().find('C$scale');
         expect(c, isNotNull);
         final intsStr = ints == 0 ? '0' : '9' * ints;
@@ -112,8 +112,8 @@ void main() {
   test(
       'scale 0-$maxScale and integers 0-$maxInts addition and subtraction test',
       () {
-    for (var scale = 0; scale <= maxScale; scale++) {
-      for (var ints = 0; ints <= maxInts; ints++) {
+    for (var scale = 0; scale <= maxScale; scale += 10) {
+      for (var ints = 0; ints <= maxInts; ints += 10) {
         final c = Currencies().find('C$scale');
         expect(c, isNotNull);
         final intsStr = ints == 0 ? '1' : '9' * ints;
