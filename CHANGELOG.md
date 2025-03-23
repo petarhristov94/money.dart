@@ -7,28 +7,32 @@
 support numbers upto 100 digits (in both the integer and decimal components) and the library probably works for larger numbers as well - we use BigInt under the hood which is only limited by memory.
 
 - New formatting engine. We have done a complete rewrite of the engine that formats money amounts which has alowed us to fix a number of 
-  long time outstanding issue. In particular we now support the india clustomer of thousands '##,###.##' and in general the engine should prove to be much more flexible.
+  long time outstanding issue. In particular we now support the india clustering of thousands '##,###.##' and in general the engine should prove to be much more flexible.
 - Add: we now support the '+' character in a pattern. When present we will either print '+' or '-' based on the sign of the number.
     This compares with the '-' pattern which will print a '-' (if the amount is -ve) but never a '+' character.
-- Breaking: a pattern for the integer component like '0#' is now illegal and will throw. The '0' character can only come after '#' character e.g. '#0' is not allowed.
-- Breaking: a pattern for the decimal component like 'xxxx.#0' is now illegal and will throw. The '0' character can only come before the '#' character e.g. 'xxx.0#' is allowed.
+- Breaking: a pattern for the integer component like '0#' is now illegal and will throw. If used the '0' character can only come after any '#' character e.g. '#0' is allowed.
+- Breaking: a pattern for the decimal component like 'xxxx.#0' is now illegal and will throw. If used the '0' character must come before any '#' character e.g. 'xxx.0#' is allowed.
 - Breaking: change the json format as the current format was likely to break any javascript code that tried to parse it when it contained a large number.
   Given the breaking change we also took the opportunity to improve the format. We now have 'minorUnits', 'decimals' and 'isoCode' as the three fields.
+
+  For example to store the value USD $10.25
   
   The old format contained four fields:
-        'integerPart': 
-        'decimalPart': 
-        'decimals': 
-        'isoCode': 
+```dart
+        'integerPart': 10
+        'decimalPart': 25
+        'decimals': 2
+        'isoCode': 'USD"
+```
 
-  New format:
-  ```dart
+The new format only has 3 fields and the minor units are a string to avoid javascript consumers throwing on big values:
+```dart
      final expectedJson = <String, dynamic>{
     'minorUnits': '1025',
     'decimals': 2,
     'isoCode': 'USD',
     };
-  ```
+```
 - Additional IllegalPatternException are now thrown when formatting a number if the pattern is invalid.
 
 # 5.4.6
