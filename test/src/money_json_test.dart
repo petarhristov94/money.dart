@@ -56,7 +56,7 @@ void main() {
     final privateNetWealth = BigInt.from(454e+12);
     final decimalPart = BigInt.from(123456789012);
     final privateNetWealthMoney = Money.fromBigInt(
-      privateNetWealth * largeScaleCurrency.scaleFactor + decimalPart,
+      privateNetWealth * largeScaleCurrency.decimalDigitsFactor + decimalPart,
       isoCode: 'test',
     );
     expect(privateNetWealthMoney.amount.integerPart, equals(privateNetWealth));

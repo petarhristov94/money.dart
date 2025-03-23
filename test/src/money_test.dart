@@ -34,17 +34,17 @@ void main() {
         Currencies().register(currency);
         expect(
             Money.parse(r'$10.0', isoCode: 'BIG').minorUnits /
-                currency.scaleFactor,
+                currency.decimalDigitsFactor,
             equals(10.0));
 
         expect(
             () =>
                 Money.fromNum(10.0, isoCode: 'BIG').minorUnits /
-                currency.scaleFactor,
+                currency.decimalDigitsFactor,
             throwsA(isA<AmountTooLargeException>()));
         expect(
             Money.parse(r'$-10.0', isoCode: 'BIG').minorUnits /
-                currency.scaleFactor,
+                currency.decimalDigitsFactor,
             equals(-10.0));
       });
     });

@@ -62,7 +62,7 @@ class Currency {
       this.country = '',
       this.unit = '',
       this.name = ''})
-      : scaleFactor = Currency._calcPrecisionFactor(decimalDigits) {
+      : decimalDigitsFactor = Currency._calcDecimalDigitsFactor(decimalDigits) {
     if (isoCode.isEmpty) {
       throw ArgumentError.value(
           isoCode, 'isoCode', 'Must be a non-empty string.');
@@ -73,13 +73,14 @@ class Currency {
   /// Creates a [Currency] from an existing [Currency] with changes.
   Currency copyWith({
     String? isoCode,
-    int? precision,
+    int? decimalDigits,
     String? symbol,
     String? pattern,
     String? groupSeparator,
     String? decimalSeparator,
   }) =>
-      Currency.create(isoCode ?? this.isoCode, precision ?? decimalDigits,
+      Currency.create(
+          isoCode ?? this.isoCode, decimalDigits ?? this.decimalDigits,
           symbol: symbol ?? this.symbol,
           pattern: pattern ?? this.pattern,
           groupSeparator: groupSeparator ?? this.groupSeparator,
@@ -94,7 +95,7 @@ class Currency {
   /// default pattern is used.
   ///
   /// If the number of minorUnits in [monetaryAmount]
-  /// exceeds the [Currency]s precision then excess digits will be ignored.
+  /// exceeds the [Currency]s decimalDigits then excess digits will be ignored.
   ///
   /// Currency aud = Currency.create('AUD', 2);
   /// Money audAmount = aud.parse('10.50');
@@ -126,7 +127,7 @@ class Currency {
   /// currency value.
   ///
   ///  e.g. if [decimalDigits] is 2 then this value will be 100.
-  final BigInt scaleFactor;
+  final BigInt decimalDigitsFactor;
 
   /// the default pattern used to format and parse monetary amounts for this
   /// currency.
@@ -160,19 +161,19 @@ class Currency {
       identical(this, other) ||
       (isoCode == other.isoCode && decimalDigits == other.decimalDigits);
 
-  static BigInt _calcPrecisionFactor(int precision) {
-    if (precision.isNegative) {
+  static BigInt _calcDecimalDigitsFactor(int decimalDigits) {
+    if (decimalDigits.isNegative) {
       throw ArgumentError.value(
-          precision, 'precision', 'Must be a non-negative value.');
+          decimalDigits, 'decimalDigits', 'Must be a non-negative value.');
     }
-    return BigInt.from(10).pow(precision);
+    return BigInt.from(10).pow(decimalDigits);
   }
 
   /// Takes a [majorUnits] and a [minorUnits] and returns
   /// a BigInt which represents the two combined values in
   /// [minorUnits].
   BigInt toMinorUnits(BigInt majorUnits, BigInt minorUnits) =>
-      majorUnits * scaleFactor + minorUnits;
+      majorUnits * decimalDigitsFactor + minorUnits;
 
   /// Returns a JSON representation of this [Currency] instance.
   ///

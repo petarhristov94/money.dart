@@ -1,3 +1,7 @@
+# 6.0.0-beta.2
+ BREAKING: the 'precision' argument to Currencies.copyWith has been renamed from
+ precision to decimalDigits
+ 
 # 6.0.0-beta.1
 - Add: support for large numbers. Thanks to @nesquikm's significant contribution we now
 support numbers upto 100 digits (in both the integer and decimal components) and the library probably works for larger numbers as well - we use BigInt under the hood which is only limited by memory.
