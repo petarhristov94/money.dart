@@ -3,7 +3,7 @@
 support numbers upto 100 digits (in both the integer and decimal components) and the library probably works for larger numbers as well - we use BigInt under the hood which is only limited by memory.
 
 - New formatting engine. We have done a complete rewrite of the engine that formats money amounts which has alowed us to fix a number of 
-  long time outstanding issue. In particular we now support the india clustomer of thousands '##,###.##' and in general the engine should prove to be much more flexible.
+  long time outstanding issue. In particular we now support the india clustering of thousands '##,###.##' and in general the engine should prove to be much more flexible.
 - Add: we now support the '+' character in a pattern. When present we will either print '+' or '-' based on the sign of the number.
     This compares with the '-' pattern which will print a '-' (if the amount is -ve) but never a '+' character.
 - Breaking: a pattern for the integer component like '0#' is now illegal and will throw. The '0' character can only come after '#' character e.g. '#0' is not allowed.
