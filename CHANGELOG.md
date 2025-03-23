@@ -6,8 +6,8 @@ support numbers upto 100 digits (in both the integer and decimal components) and
   long time outstanding issue. In particular we now support the india clustering of thousands '##,###.##' and in general the engine should prove to be much more flexible.
 - Add: we now support the '+' character in a pattern. When present we will either print '+' or '-' based on the sign of the number.
     This compares with the '-' pattern which will print a '-' (if the amount is -ve) but never a '+' character.
-- Breaking: a pattern for the integer component like '0#' is now illegal and will throw. The '0' character can only come after '#' character e.g. '#0' is not allowed.
-- Breaking: a pattern for the decimal component like 'xxxx.#0' is now illegal and will throw. The '0' character can only come before the '#' character e.g. 'xxx.0#' is allowed.
+- Breaking: a pattern for the integer component like '0#' is now illegal and will throw. If used the '0' character can only come after any '#' character e.g. '#0' is allowed.
+- Breaking: a pattern for the decimal component like 'xxxx.#0' is now illegal and will throw. If used the '0' character must come before any '#' character e.g. 'xxx.0#' is allowed.
 - Breaking: change the json format as the current format was likely to break any javascript code that tried to parse it when it contained a large number.
   Given the breaking change we also took the opportunity to improve the format. We now have 'minorUnits', 'decimals' and 'isoCode' as the three fields.
   
