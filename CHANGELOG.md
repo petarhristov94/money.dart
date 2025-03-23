@@ -1,3 +1,27 @@
+# 6.0.0-beta.3
+BREAKING: change fromCode and toCode to fromIsoCode and toIsoCode in the ExchangeRate.fromMinorUnits and ExchangeRate.fromNum methods to bring it in line with other methods.
+Change how ExchangeRates are stored to json to bring it in line with how we store money as json.
+
+```dart 
+/// old format
+ Map<String, dynamic> toJson() => {
+        'integerPart': 0,
+        'decimalPart': 68
+        'decimals': 2,
+        'fromIsoCode': 'AUD'
+        'toIsoCode': 'USD'
+        'toDecimalDigits': 3,
+      };
+
+/// new format
+        'minorUnits': '75312',
+        'decimals': 5,
+        'fromIsoCode': 'AUD',
+        'toIsoCode': 'USD',
+        'toDecimals': 3,
+```
+Note that 'minoorUnits' is a string to avoid overflow error when javascript parses the json.
+
 # 6.0.0-beta.2
  BREAKING: the 'precision' argument to Currencies.copyWith has been renamed from
  precision to decimalDigits

@@ -212,8 +212,8 @@ void main() {
       final exchangeRate = ExchangeRate.fromMinorUnits(
         212345678,
         decimalDigits: 8,
-        fromCode: 'CUR1',
-        toCode: receiveCurrency.isoCode,
+        fromIsoCode: 'CUR1',
+        toIsoCode: receiveCurrency.isoCode,
       );
       expect('$exchangeRate', equals('2.12345678'));
 
@@ -221,7 +221,7 @@ void main() {
       expect('$receiveAmount', equals(r'$2.61185184'));
 
       final exchangeTwoDigits = ExchangeRate.fromMinorUnits(100,
-          decimalDigits: 2, fromCode: 'EXC', toCode: 'CUR1');
+          decimalDigits: 2, fromIsoCode: 'EXC', toIsoCode: 'CUR1');
 
       final receiveAmountTwoDigits =
           receiveAmount.exchangeTo(exchangeTwoDigits);

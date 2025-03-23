@@ -21,7 +21,7 @@ class ExchangeRate {
   /// Create an exchange rate from a [Fixed] decimal.
   ///
   /// The target currency, as defined by [toIsoCode], describes the
-  /// currency of the [Money] instance that is returned by the excchange.
+  /// currency of the [Money] instance that is returned by the exchange.
   ///
   /// The [toDecimalDigits] is the number of decimal digits of the resulting
   /// [Money] amount. If not supplied the decimalDigits of the
@@ -53,17 +53,17 @@ class ExchangeRate {
   /// to the provided number of [decimalDigits].
   ///
   /// The [toDecimalDigits] is the number of decimals of the resulting [Money]
-  ///  amount. If not supplied the decimalDigits of the [toCode]'s currency
+  ///  amount. If not supplied the decimalDigits of the [toIsoCode]'s currency
   /// is used.
   factory ExchangeRate.fromMinorUnits(int exchangeRateMinorUnits,
           {required int decimalDigits,
-          required CurrencyIsoCode fromCode,
-          required CurrencyIsoCode toCode,
+          required CurrencyIsoCode fromIsoCode,
+          required CurrencyIsoCode toIsoCode,
           int? toDecimalDigits}) =>
       ExchangeRate.fromMinorUnitsWithCurrency(exchangeRateMinorUnits,
           decimalDigits: decimalDigits,
-          fromCurrency: _findCurrency(fromCode),
-          toCurrency: _findCurrency(toCode),
+          fromCurrency: _findCurrency(fromIsoCode),
+          toCurrency: _findCurrency(toIsoCode),
           toDecimalDigits: toDecimalDigits);
 
   /// Create an exchange rate from an integer holding minor units
@@ -89,18 +89,18 @@ class ExchangeRate {
   ///
   /// The [toDecimalDigits] is the number of decimal digits
   ///  of the resulting [Money] amount. If not
-  /// supplied the decimalDigits of the [toCode]'s currency is used.
+  /// supplied the decimalDigits of the [toIsoCode]'s currency is used.
   factory ExchangeRate.fromNum(
     num exchangeRate, {
     required int decimalDigits,
-    required CurrencyIsoCode fromCode,
-    required CurrencyIsoCode toCode,
+    required CurrencyIsoCode fromIsoCode,
+    required CurrencyIsoCode toIsoCode,
     int? toDecimalDigits,
   }) =>
       ExchangeRate.fromNumWithCurrency(exchangeRate,
           decimalDigits: decimalDigits,
-          fromCurrency: _findCurrency(fromCode),
-          toCurrency: _findCurrency(toCode),
+          fromCurrency: _findCurrency(fromIsoCode),
+          toCurrency: _findCurrency(toIsoCode),
           toDecimalDigits: toDecimalDigits);
 
   /// Creates an [ExchangeRate] instance from a JSON representation.
@@ -109,13 +109,13 @@ class ExchangeRate {
   /// [toJson] method.
   factory ExchangeRate.fromJson(Map<String, dynamic> json) =>
       ExchangeRate.fromFixed(
-        Fixed.parse(
-          '${json['integerPart']}.${json['decimalPart']}',
+        Fixed.fromBigInt(
+          BigInt.parse(json['minorUnits'] as String),
           scale: json['decimals'] as int,
         ),
         fromIsoCode: json['fromIsoCode'] as String,
         toIsoCode: json['toIsoCode'] as String,
-        toDecimalDigits: json['toDecimalDigits'] as int?,
+        toDecimalDigits: json['toDecimals'] as int?,
       );
 
   /// Create an exchange rate from an integer or decimal holding major units
@@ -237,11 +237,10 @@ class ExchangeRate {
   /// The JSON representation can be used to recreate this [ExchangeRate]
   /// instance using the [ExchangeRate.fromJson] factory.
   Map<String, dynamic> toJson() => {
-        'integerPart': exchangeRate.integerPart.toInt(),
-        'decimalPart': exchangeRate.decimalPart.toInt(),
+        'minorUnits': '${exchangeRate.minorUnits.toInt()}',
         'decimals': exchangeRate.scale,
         'fromIsoCode': fromCurrency.isoCode,
         'toIsoCode': toCurrency.isoCode,
-        'toDecimalDigits': toDecimalDigits,
+        'toDecimals': toDecimalDigits,
       };
 }
