@@ -148,7 +148,7 @@ void main() {
   // 100,345.30 EUR
   final euroCostPrice = Money.fromInt(10034530, isoCode: 'EUR');
   print(euroCostPrice.format('###,###'));
-  // > 100.345
+  // > 100345
 
   print(euroCostPrice.format('###,###.## S'));
   // > 100.345,3 €

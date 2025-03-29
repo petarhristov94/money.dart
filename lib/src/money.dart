@@ -317,7 +317,6 @@ class Money implements Comparable<Money> {
     try {
       return Money.parseWithCurrency(amount, currency,
           decimalDigits: decimalDigits, pattern: pattern);
-      
     } catch (e) {
       throw MoneyParseException(e.toString());
     }
@@ -709,8 +708,14 @@ class Money implements Comparable<Money> {
   }
 
   /// Returns [Money] multiplied by [multiplier], using schoolbook rounding.
-  Money operator *(num multiplier) => _withAmount(
-      amount.multiply(multiplier).copyWith(scale: currency.decimalDigits));
+  Money operator *(num multiplier) {
+    print(multiplier);
+    print(amount.multiply(multiplier));
+    print(amount.multiply(multiplier).copyWith(scale: currency.decimalDigits));
+
+    return _withAmount(
+        amount.multiply(multiplier).copyWith(scale: currency.decimalDigits));
+  }
 
   /// Returns [Money] divided by [divisor], using schoolbook rounding.
   Money operator /(num divisor) => _withAmount(
