@@ -137,6 +137,18 @@ void main() {
       expect(formatted, '1 234 567/89€');
     });
 
+    test('Non-breaking space in pattern', () {
+      final money = Money.fromInt(1025, isoCode: 'USD');
+      // Using a non-breaking space (\u{00A0}) instead of a regular space.
+      expect(money.format('S\u{00A0}##.##'), equals('\$\u{00A0}10.25'));
+    });
+
+    test('Trailing non-breaking space in pattern', () {
+      final money = Money.fromInt(1025, isoCode: 'USD');
+      // Using a non-breaking space (\u{00A0}) as trailing space.
+      expect(money.format('##.##\u{00A0}S'), equals('10.25\u{00A0}\$'));
+    });
+
     test('Lead zero USD', () {
       expect(Money.fromInt(310, isoCode: 'USD').format('000.00'),
           equals('003.10'));

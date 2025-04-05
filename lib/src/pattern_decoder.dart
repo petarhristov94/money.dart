@@ -126,6 +126,7 @@ class PatternDecoder implements MoneyDecoder<String> {
           }
           seenMajor = true;
         case ' ':
+        case '\u{00A0}':
           break;
         default:
           throw MoneyParseException(
@@ -201,7 +202,7 @@ class PatternDecoder implements MoneyDecoder<String> {
   /// Removes all whitespace from a pattern or a value
   /// as when we are parsing we ignore whitespace.
   String compressWhitespace(String value) {
-    final regEx = RegExp(r'\s+');
+    final regEx = RegExp('[\\s\u{00A0}]+');
     return value.replaceAll(regEx, '');
   }
 
